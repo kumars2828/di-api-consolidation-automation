@@ -1,9 +1,9 @@
 ---
 name: "Run Post Compare"
-description: "Run agentic workflow to convert any API test to POST-vs-GET or POST-vs-POST comparison with shared query builder and Mochawesome response logging."
+description: "Convert an existing API test to both POST-vs-GET and POST-vs-POST from its cert, consolidate and GET URLs; discover the mapper and dataset in the file. Also supports structured specs and batch runs."
 agent: "Post Compare Agent"
 model: "GPT-5 (copilot)"
-argument-hint: "spec={\"scope\":\"SINGLE|ALL_METHODS\",\"method\":\"MethodName\",\"test\":\"test/path/file.js\",\"mapping\":\"Mapping_JsonXX\",\"runMode\":\"POST_GET|POST_POST|BOTH\",\"primary\":{\"baseMode\":\"helper|fixed\",\"baseEnv\":\"config.xxx\",\"baseHelper\":\"testdataGlobal.Endpoint_Url_cert|testdataGlobal.Endpoint_Url_staging\",\"baseUrl\":\"https://...\",\"path\":\"/api/...\"},\"secondary\":{\"method\":\"GET|POST\",\"baseMode\":\"helper|fixed\",\"baseEnv\":\"config.xxx\",\"baseHelper\":\"testdataGlobal.Endpoint_Url_staging|testdataGlobal.Endpoint_Url_cert|testdataGlobal.Endpoint_Url_consolidate\",\"baseUrl\":\"https://...\",\"pathMode\":\"static|builder\",\"path\":\"/api/...|/knowledge/...\",\"builder\":\"Method_GetPath\",\"builderSource\":\"dataset|mappedPost\"},\"resilientLogging\":true,\"compareDifferencesOnly\":true,\"serialExecution\":true} | Example POST_GET: spec={\"scope\":\"SINGLE\",\"method\":\"ListCoatings\",\"test\":\"test/list/list_coatings.js\",\"mapping\":\"Mapping_Json49\",\"runMode\":\"POST_GET\",\"primary\":{\"baseMode\":\"helper\",\"baseEnv\":\"config.cert_env\",\"baseHelper\":\"testdataGlobal.Endpoint_Url_cert\",\"path\":\"/api//ListCoatings\"},\"secondary\":{\"method\":\"GET\",\"baseMode\":\"helper\",\"baseEnv\":\"config.cert_new_env\",\"baseHelper\":\"testdataGlobal.Endpoint_Url_staging\",\"pathMode\":\"static\",\"path\":\"/api/list/coating\"},\"resilientLogging\":true,\"compareDifferencesOnly\":true,\"serialExecution\":true} | Example POST_POST: spec={\"scope\":\"SINGLE\",\"method\":\"ListCoatings\",\"test\":\"test/list/list_coatings.js\",\"mapping\":\"Mapping_Json49\",\"runMode\":\"POST_POST\",\"primary\":{\"baseMode\":\"helper\",\"baseEnv\":\"config.cert_env\",\"baseHelper\":\"testdataGlobal.Endpoint_Url_cert\",\"path\":\"/api//ListCoatings\"},\"secondary\":{\"method\":\"POST\",\"baseMode\":\"helper\",\"baseEnv\":\"consolidate\",\"baseHelper\":\"testdataGlobal.Endpoint_Url_consolidate\",\"pathMode\":\"static\",\"path\":\"/api/ListCoatings\"},\"resilientLogging\":true,\"compareDifferencesOnly\":true,\"serialExecution\":true} | Example ALL_METHODS BOTH: spec={\"scope\":\"ALL_METHODS\",\"runMode\":\"BOTH\"}"
+argument-hint: 'test=test/path/file.js cert=https://.../api/MethodName consolidate=https://.../api/MethodName get=https://.../knowledge/... (optional: spec={...} or scope=ALL_METHODS runMode=POST_GET|POST_POST|BOTH)'
 ---
 Apply the post comparison workflow for the input below.
 
@@ -11,25 +11,28 @@ User input:
 {{input}}
 
 Requirements:
-- If `scope=ALL_METHODS`, run only one batch command based on runMode:
+- If `scope=ALL_METHODS`, run the batch command(s) for runMode:
 	- `POST_GET` -> `npm run RunAllPostGet`
 	- `POST_POST` -> `npm run RunAllPostPost`
-	- `BOTH` -> `npm run RunAllPostCompare`
+	- `BOTH` -> run `npm run RunAllPostGet` and then `npm run RunAllPostPost`.
 - If `scope=ALL_METHODS`, do not edit test files; return run summary and failed scripts.
+- For a new API with three supplied URLs, use the active test file or `test=...`; read its dataset reference and mapper and derive the method from that file. Do not require the user to restate the mapper or a full JSON spec. Parse each URL into its own host and path; ask only for missing or ambiguous details.
+- For a new `scope=SINGLE` method, default to implementing both `POST_GET` and `POST_POST`. The three provided URLs supply primary, secondary GET and secondary POST endpoints; each run still selects only one mode.
+- Define `environment_1`, `environment_2`, `runMode`, `isPostGetMode`, and `isPostPostMode`; fetch a separate secondary token only in `POST_POST`, and use it for the secondary POST payload.
+- Check each required token is non-empty in `before`; never print a token to the console. Redact report tokens by default; show the real token in request contexts only on explicit user request, warning that report files then contain secrets.
 - Reuse existing mapping function from the target test.
 - Allow primary and secondary URLs to be fully different (base and path both independent).
 - Prefer helper-based base URL generation using config + testdataGlobal (detail_product style) for both calls.
 - Use fixed absolute base URLs only when the input explicitly asks for fixed URLs.
-- If secondary.method=GET and getPathMode=builder, put GET query construction in utilities/query-builders/get_query.js using a method-specific function.
+- For the GET mode, put GET path construction in utilities/query-builders/get_query.js using a method-specific function (including static paths).
 - If the method's GET query is based on the dataObjects loop, pass the raw dataset object into the builder.
 - If the method's GET query is based on the POST payload, pass the mapped POST body into the builder.
-- If pathMode=static, use provided path directly.
-- Update test to call shared get_query helper only when builder mode is used.
+- Keep POST paths explicit and route the GET path through the shared get_query helper.
 - Add Mochawesome request and response contexts for both calls.
 - Ensure both calls' status code plus response payload are logged even if one call fails.
 - Prefer resilient dual-call handling (for example, allSettled) so one failed request does not hide the other response details.
 - Execute only the selected runMode path; do not run both modes together.
 - In comparison context, log only differences when compareDifferencesOnly=true.
 - Keep changes minimal and avoid unrelated refactors.
-- Run the most targeted mocha command possible for the edited test.
+- Validate the separate PostGet and PostPost scripts for methods supporting both modes, and report their results separately.
 - Report modified files and test result.

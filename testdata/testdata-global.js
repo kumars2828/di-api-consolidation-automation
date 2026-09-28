@@ -73,7 +73,7 @@ export default {
                 Username: "NPotlapalli",
                 Password: "dGVtcHBhc3M0MTI="
             }
-        }
+        },
     },
 
     // Access Token Generator
@@ -89,7 +89,9 @@ export default {
             chai.request(envConfig.baseUrl)
                 .post(envConfig.access_token_url)
                 .set('Content-Type', 'application/json')
-                .send(envConfig.access_token_credentails)
+                .send(env === 'consolidate_cert'
+                    ? this.environments.cert_containerized.access_token_credentails
+                    : envConfig.access_token_credentails)
                 .end((error, response) => {
                     if (error) {
                         console.error(error);
