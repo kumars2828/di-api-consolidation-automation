@@ -44,5 +44,9 @@ export default {
     // Static GET path for ListCoatings (no query parameters)
     ListCoatings_GetPath: function buildListCoatingsGetPath() {
         return '/knowledge/list/coating';
+    },
+
+    ListAGSBeersQualityOfEvidence_GetPath: function buildListAGSBeersQualityOfEvidenceGetPath() {
+        return '/knowledge/beers/quality-of-evidence';
     }
 };
