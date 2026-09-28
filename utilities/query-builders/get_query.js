@@ -1,4 +1,5 @@
 export default {
+    // Builds the ListWarningLabels GET query string from a dataset's filter fields
     ListWarningLabels_GetPath: function buildListWarningLabelsGetPath(dataset) {
         if (!dataset) {
             throw new Error('dataset is required to build ListWarningLabels GET path');
@@ -22,6 +23,7 @@ export default {
         return `/knowledge/warning-label/label?${query.toString()}`;
     },
 
+    // Builds the DetailProduct GET query string from the mapped POST payload
     DetailProduct_GetPath: function buildDetailProductGetPath(mappedDataPost) {
         if (!mappedDataPost || !mappedDataPost.ProductId) {
             throw new Error('mappedDataPost with ProductId is required to build DetailProduct GET path');
@@ -37,5 +39,10 @@ export default {
         }).toString();
 
         return `/knowledge/product/detail?${query}`;
+    },
+
+    // Static GET path for ListCoatings (no query parameters)
+    ListCoatings_GetPath: function buildListCoatingsGetPath() {
+        return '/knowledge/list/coating';
     }
 };

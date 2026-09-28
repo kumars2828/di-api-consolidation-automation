@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
@@ -38,23 +38,38 @@ if (isListOnly) {
   process.exit(0);
 }
 
-let failed = false;
+const reportDir = resolve(process.cwd(), 'mochawesome-report');
+const reportHtml = resolve(reportDir, 'report.html');
+const reportJson = resolve(reportDir, 'report.json');
+const lastModified = (file) => existsSync(file) ? statSync(file, { bigint: true }).mtimeNs : null;
+const priorHtmlModified = lastModified(reportHtml);
+const priorJsonModified = lastModified(reportJson);
+const environment = { ...process.env };
+const testFiles = [];
 
 for (const scriptName of matchedScriptNames) {
-  console.log(`\nRunning: npm run ${scriptName}`);
-  const runResult = spawnSync('npm', ['run', scriptName], {
-    stdio: 'inherit',
-    shell: process.platform === 'win32'
-  });
-
-  if (runResult.status !== 0) {
-    failed = true;
-    console.error(`Script failed: ${scriptName} (exit ${runResult.status ?? 1})`);
+  const script = scripts[scriptName];
+  const match = script.match(/^([A-Z_]+)=(POST_GET|POST_POST) mocha (\.\/test\/\S+\.js)\s/);
+  if (!match || match[2] !== mode) {
+    console.error(`Cannot include script in batch: ${scriptName}`);
+    process.exit(1);
   }
+  environment[match[1]] = mode;
+  testFiles.push(match[3]);
 }
 
-if (failed) {
+const runResult = spawnSync(process.execPath, [
+  resolve(process.cwd(), 'node_modules/mocha/bin/mocha.js'),
+  ...testFiles,
+  '--reporter', 'mocha-multi-reporters',
+  '--reporter-options', 'configFile=report-config.json'
+], { stdio: 'inherit', env: environment });
+
+if (lastModified(reportHtml) !== priorHtmlModified && lastModified(reportJson) !== priorJsonModified) {
+  console.log(`Combined report: ${reportHtml}`);
+} else {
+  console.error('The combined report was not updated.');
   process.exit(1);
 }
 
-console.log('\nAll scripts completed successfully.');
+process.exit(runResult.status ?? 1);

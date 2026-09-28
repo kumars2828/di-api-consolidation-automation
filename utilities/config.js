@@ -6,6 +6,7 @@ export default{
 
     CERT_Env : 'cert-api',
     CERT_New_Env : "cert-api",  
+    CERT_Staging_Env : "cert-staging-api",
 
 
     //Getter methods to efficently call the required environment value
@@ -27,6 +28,10 @@ export default{
 
     get cert_new_env(){
         return this.CERT_New_Env
+    },
+
+    get cert_staging_env(){
+        return this.CERT_Staging_Env
     }
 
 

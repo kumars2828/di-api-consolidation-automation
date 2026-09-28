@@ -6,6 +6,7 @@ import access_token from '../../testdata/access_token.js';
 import list from '../../testdata/testdata-common/list.js';
 import testdataGlobal from '../../testdata/testdata-global.js';
 import config from '../../utilities/config.js';
+import get_query from '../../utilities/query-builders/get_query.js';
 
 chai.use(chaiHttp);
 const { expect, should } = chai;
@@ -48,7 +49,7 @@ describe('list_coatings ', function () {
 
             it(`${datasetName} - Generate all list in ListCoatings`, function (done) {
 
-                // Runtime usage
+                // Map the dataset into the POST payload for cert (and consolidate, if POST_POST mode)
                 const mappedData_Post = testdataGlobal.Mapping_Json49({ [datasetName]: dataset }, access_token.cert_containerized_token);
                 const mappedData_Post_Consolidate = isPostPostMode
                     ? testdataGlobal.Mapping_Json49({ [datasetName]: dataset }, access_token.consolidate_token)
@@ -60,18 +61,18 @@ describe('list_coatings ', function () {
                     return;
                 }
 
+                // Build the base URLs and GET path for the selected run mode
                 const postEnv = config.cert_env;
-                const getEnv = config.cert_new_env;
-                const postPath = '/api//ListCoatings';
-                const getPath = '/api/list/coating';
+                const getEnv = config.cert_staging_env;
                 const postBaseUrl = testdataGlobal.Endpoint_Url_cert(postEnv);
-                const getBaseUrl = testdataGlobal.Endpoint_Url_staging(getEnv);
+                const getBaseUrl = testdataGlobal.Endpoint_Url_staging_knowledge(getEnv);
                 const consolidatePostBaseUrl = testdataGlobal.Endpoint_Url_consolidate();
-                const consolidatePostPath = '/api/ListCoatings';
 
-                // Create request objects for both calls
+                const getPath = get_query.ListCoatings_GetPath();
+
+                // Build the POST and (GET or consolidate POST) request objects
                 const postRequest = chai.request(postBaseUrl)
-                    .post(postPath)
+                    .post('/api/ListCoatings')
                     .set('Content-Type', 'application/json')
                     .send(mappedData_Post);
 
@@ -83,7 +84,7 @@ describe('list_coatings ', function () {
 
                 const consolidatePostRequest = isPostPostMode
                     ? chai.request(consolidatePostBaseUrl)
-                        .post(consolidatePostPath)
+                        .post('/api/ListCoatings')
                         .set('Content-Type', 'application/json')
                         .send(mappedData_Post_Consolidate)
                     : null;
@@ -92,7 +93,7 @@ describe('list_coatings ', function () {
                 addContext(this, {
                     title: 'Request Body for POST Call',
                     value: {
-                        URL: postBaseUrl + postPath,
+                        URL: postBaseUrl + '/api/ListCoatings',
                         Method: 'POST',
                         Headers: {
                             'Content-Type': 'application/json'
@@ -118,7 +119,7 @@ describe('list_coatings ', function () {
                     addContext(this, {
                         title: 'Request Body for Secondary Call',
                         value: {
-                            URL: consolidatePostBaseUrl + consolidatePostPath,
+                            URL: consolidatePostBaseUrl + '/api/ListCoatings',
                             Method: 'POST',
                             Headers: {
                                 'Content-Type': 'application/json'
@@ -136,6 +137,7 @@ describe('list_coatings ', function () {
                     .then(results => {
                         const [postResult, secondaryResult] = results;
 
+                        // Convert a raw HTTP response into a plain JSON object
                         const parseResponseData = (response) => {
                             if (response.body && typeof response.body === 'object' && Object.keys(response.body).length > 0) {
                                 return response.body;
@@ -152,6 +154,7 @@ describe('list_coatings ', function () {
                             return {};
                         };
 
+                        // Normalize a settled/rejected promise result into { response, statusCode, body, error }
                         const normalizeResult = (result) => {
                             if (result.status === 'fulfilled') {
                                 return {
@@ -179,11 +182,10 @@ describe('list_coatings ', function () {
                         addContext(this, {
                             title: 'Primary Response Details',
                             value: {
-                                URL: postBaseUrl + postPath,
+                                URL: postBaseUrl + '/api/ListCoatings',
                                 Method: 'POST',
                                 Status: postInfo.statusCode,
-                                Body: postInfo.body,
-                                Error: postInfo.error ? String(postInfo.error.message || postInfo.error) : null
+                                Body: postInfo.body
                             }
                         });
 
@@ -194,8 +196,7 @@ describe('list_coatings ', function () {
                                     URL: getBaseUrl + getPath,
                                     Method: 'GET',
                                     Status: secondaryInfo.statusCode,
-                                    Body: secondaryInfo.body,
-                                    Error: secondaryInfo.error ? String(secondaryInfo.error.message || secondaryInfo.error) : null
+                                    Body: secondaryInfo.body
                                 }
                             });
                         }
@@ -204,102 +205,46 @@ describe('list_coatings ', function () {
                             addContext(this, {
                                 title: 'Secondary Response Details',
                                 value: {
-                                    URL: consolidatePostBaseUrl + consolidatePostPath,
+                                    URL: consolidatePostBaseUrl + '/api/ListCoatings',
                                     Method: 'POST',
                                     Status: secondaryInfo.statusCode,
-                                    Body: secondaryInfo.body,
-                                    Error: secondaryInfo.error ? String(secondaryInfo.error.message || secondaryInfo.error) : null
+                                    Body: secondaryInfo.body
                                 }
                             });
                         }
 
                         try {
-                            // Check if responses are valid
+                            // Fail fast if either call didn't return a response
                             if (!postInfo.response || !secondaryInfo.response) {
                                 throw new Error('One of the responses is undefined');
                             }
 
                             if (isPostGetMode && (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200)) {
                                 throw new Error(
-                                    `Unexpected status code(s). POST(${postBaseUrl}${postPath}): ${postInfo.statusCode}, GET(${getBaseUrl}${getPath}): ${secondaryInfo.statusCode}`
+                                    `Unexpected status code(s). POST(${postBaseUrl}/api/ListCoatings): ${postInfo.statusCode}, GET(${getBaseUrl}${getPath}): ${secondaryInfo.statusCode}`
                                 );
                             }
 
                             if (isPostPostMode && (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200)) {
                                 throw new Error(
-                                    `Unexpected status code(s). POST(${postBaseUrl}${postPath}): ${postInfo.statusCode}, POST(${consolidatePostBaseUrl}${consolidatePostPath}): ${secondaryInfo.statusCode}`
+                                    `Unexpected status code(s). POST(${postBaseUrl}/api/ListCoatings): ${postInfo.statusCode}, POST(${consolidatePostBaseUrl}/api/ListCoatings): ${secondaryInfo.statusCode}`
                                 );
                             }
 
+                            // Sort both bodies and diff them field by field
                             const primarySorted = testdataGlobal.Sorting_Objects(postInfo.body || {});
                             const secondarySorted = testdataGlobal.Sorting_Objects(secondaryInfo.body || {});
-                            const comparisonDiff = JSON.stringify(testdataGlobal.JSON_Differences(primarySorted, secondarySorted), null, 2);
-                            expect(comparisonDiff).to.be.equal('null');
+                            const differencesObject = testdataGlobal.JSON_Differences(primarySorted, secondarySorted);
 
-                            if (isPostGetMode) {
-                                addContext(this, {
-                                    title: 'Comparison Result for - ListCoatings (POST vs GET)',
-                                    value: {
-                                        'POST Endpoint': postBaseUrl + postPath,
-                                        'GET Endpoint': getBaseUrl + getPath,
-                                        'Comparison Difference': comparisonDiff
-                                    }
-                                });
-                            }
+                            addContext(this, {
+                                title: 'Comparison Difference',
+                                value: testdataGlobal.Differences_Table(differencesObject)
+                            });
 
-                            if (isPostPostMode) {
-                                addContext(this, {
-                                    title: 'Comparison Result for - ListCoatings (POST Cert vs POST Consolidate)',
-                                    value: {
-                                        'CERT POST Endpoint': postBaseUrl + postPath,
-                                        'Consolidate POST Endpoint': consolidatePostBaseUrl + consolidatePostPath,
-                                        'Comparison Difference': comparisonDiff
-                                    }
-                                });
-                            }
+                            expect(JSON.stringify(differencesObject)).to.be.equal('null');
 
                             done();
                         } catch (err) {
-                            // Report Generated if the responses are not identical
-                            const errorContext = {
-                                Mode: runMode,
-                                'POST Endpoint': postBaseUrl + postPath,
-                                'POST Status': postInfo.statusCode,
-                                'POST Error': postInfo.error ? String(postInfo.error.message || postInfo.error) : null
-                            };
-
-                            if (isPostGetMode) {
-                                errorContext['GET Endpoint'] = getBaseUrl + getPath;
-                                errorContext['GET Status'] = secondaryInfo.statusCode;
-                                errorContext['GET Error'] = secondaryInfo.error ? String(secondaryInfo.error.message || secondaryInfo.error) : null;
-                                errorContext['POST vs GET Comparison Difference'] = JSON.stringify(
-                                    testdataGlobal.JSON_Differences(
-                                        testdataGlobal.Sorting_Objects(postInfo.body || {}),
-                                        testdataGlobal.Sorting_Objects(secondaryInfo.body || {})
-                                    ),
-                                    null,
-                                    2
-                                );
-                            }
-
-                            if (isPostPostMode) {
-                                errorContext['Consolidate POST Endpoint'] = consolidatePostBaseUrl + consolidatePostPath;
-                                errorContext['Consolidate POST Status'] = secondaryInfo.statusCode;
-                                errorContext['Consolidate POST Error'] = secondaryInfo.error ? String(secondaryInfo.error.message || secondaryInfo.error) : null;
-                                errorContext['POST vs POST Comparison Difference'] = JSON.stringify(
-                                    testdataGlobal.JSON_Differences(
-                                        testdataGlobal.Sorting_Objects(postInfo.body || {}),
-                                        testdataGlobal.Sorting_Objects(secondaryInfo.body || {})
-                                    ),
-                                    null,
-                                    2
-                                );
-                            }
-
-                            addContext(this, {
-                                title: 'Error',
-                                value: errorContext
-                            });
                             done(new Error(`Failed to compare the responses - ${err}`));
                         }
                     })

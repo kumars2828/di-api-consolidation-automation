@@ -12,6 +12,7 @@ const __dirname = path.dirname(__filename);
 export default {
     baseUrl_cert: ".gsdd.net", //Prod endpoint
     baseUrl_staging: ".druginfo.elsevier.systems/api", //Staging endpoint
+    baseUrl_staging_knowledge: ".druginfo.elsevier.systems", //Staging knowledge-route endpoint (no /api segment)
     request_header: "https://",
 
     // Declare Global Test Data Attributes
@@ -28,6 +29,11 @@ export default {
      // Base URL - Generator
     Endpoint_Url_staging: function (Env) {
         return this.request_header + Env + this.baseUrl_staging;
+    },
+
+    // Base URL - Generator for knowledge routes (e.g. /knowledge/product/detail)
+    Endpoint_Url_staging_knowledge: function (Env) {
+        return this.request_header + Env + this.baseUrl_staging_knowledge;
     },
 
     // Base URL - Consolidate environment
@@ -219,6 +225,31 @@ export default {
         }
 
         return Object.keys(differences).length > 0 ? differences : null;
+    },
+
+    // Renders a JSON_Differences() result as a readable "Field | Old Value | New Value" table
+    Differences_Table: function formatDifferencesTable(diffObject) {
+        if (!diffObject || Object.keys(diffObject).length === 0) {
+            return 'No differences found';
+        }
+
+        const formatValue = (value) => {
+            if (value === undefined) return '(missing)';
+            if (value === null) return 'null';
+            if (value === '') return '"" (empty string)';
+            if (typeof value === 'object') return JSON.stringify(value);
+            return String(value);
+        };
+
+        const rows = Object.entries(diffObject).map(([field, { oldValue, newValue }]) => {
+            return `| ${field} | ${formatValue(oldValue)} | ${formatValue(newValue)} |`;
+        });
+
+        return [
+            '| Field | Old Value | New Value |',
+            '|---|---|---|',
+            ...rows
+        ].join('\n');
     },
 
     // Generating Mapped Json - Adverse Reaction Report_ByDrug (For API_Method:- ADRAdverseReactionsByDrug)

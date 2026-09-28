@@ -50,7 +50,7 @@ describe('list_warning_labels ', function () {
     // the POST response from cert matches the secondary response from either:
     // - GET response in staging
     // - or POST response in consolidate
-    [Object.entries(list.ListWarningLabels_dataObjects)].forEach(([datasetName, dataset]) => {
+    Object.entries(list.ListWarningLabels_dataObjects).forEach(([datasetName, dataset]) => {
 
         it(`${datasetName} - Generate all list in ListWarningLabels `, function (done) {
 
@@ -70,19 +70,17 @@ describe('list_warning_labels ', function () {
 
             // Build all endpoint URLs for the run mode.
             const postEnv = config.cert_env;
-            const getEnv = config.cert_new_env;
-
+            const getEnv = config.cert_staging_env;
             const postBaseUrl = testdataGlobal.Endpoint_Url_cert(postEnv);
-            const getBaseUrl = testdataGlobal.Endpoint_Url_staging(getEnv);
+            const getBaseUrl = testdataGlobal.Endpoint_Url_staging_knowledge(getEnv);
             const consolidatePostBaseUrl = testdataGlobal.Endpoint_Url_consolidate();
 
-            const postPath = '/api/ListWarningLabels';
             const getPath = get_query.ListWarningLabels_GetPath(dataset);
 
             // This creates the actual HTTP request objects.
             // POST request to cert environment
             const postRequest = chai.request(postBaseUrl)
-                .post(postPath)
+                .post('/api/ListWarningLabels')
                 .set('Content-Type', 'application/json')
                 .send(mappedData_Post);
 
@@ -96,7 +94,7 @@ describe('list_warning_labels ', function () {
             // POST request to consolidate environment
             const consolidatePostRequest = isPostPostMode
                 ? chai.request(consolidatePostBaseUrl)
-                    .post(postPath)
+                    .post('/api/ListWarningLabels')
                     .set('Content-Type', 'application/json')
                     .send(mappedData_Post_Consolidate)
                 : null;
@@ -105,7 +103,7 @@ describe('list_warning_labels ', function () {
             addContext(this, {
                 title: 'Request Body for POST Call',
                 value: {
-                    URL: postBaseUrl + postPath,
+                    URL: postBaseUrl + '/api/ListWarningLabels',
                     Method: 'POST',
                     Headers: {
                         'Content-Type': 'application/json'
@@ -186,69 +184,79 @@ describe('list_warning_labels ', function () {
                     addContext(this, {
                         title: 'POST Response Details',
                         value: {
-                            URL: postBaseUrl + postPath,
+                            URL: postBaseUrl + '/api/ListWarningLabels',
                             Method: 'POST',
                             Status: postInfo.statusCode,
-                            Body: postInfo.body,
-                            Error: postInfo.error ? String(postInfo.error.message || postInfo.error) : null
+                            Body: postInfo.body
                         }
                     });
 
-                    // Validate the HTTP status before comparison
-                    if (!postInfo.response || !secondaryInfo.response) {
-                        throw new Error('One of the responses is undefined');
-                    }
-
-                    if (isPostGetMode) {
-                        if (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200) {
-                            throw new Error(
-                                `Unexpected status code(s). POST(${postBaseUrl}${postPath}): ${postInfo.statusCode}, GET(${getBaseUrl}${getPath}): ${secondaryInfo.statusCode}`
-                            );
-                        }
-                    }
-
-                    if (isPostPostMode) {
-                        if (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200) {
-                            throw new Error(
-                                `Unexpected status code(s). POST(${postBaseUrl}${postPath}): ${postInfo.statusCode}, POST(${consolidatePostBaseUrl}${postPath}): ${secondaryInfo.statusCode}`
-                            );
-                        }
-                    }
-
-                    // This normalizes both responses before comparing them.
-                    // Sorting removes object-order issues and prevents false mismatches.
-                    const primarySorted = testdataGlobal.Sorting_Objects(postInfo.body || {});
-                    const secondarySorted = testdataGlobal.Sorting_Objects(secondaryInfo.body || {});
-
-                    // This finds field-level JSON differences.
-                    // If both responses are identical, JSON_Differences returns null.
-                    const comparisonDiff = JSON.stringify(testdataGlobal.JSON_Differences(primarySorted, secondarySorted), null, 2);
-                    expect(comparisonDiff).to.be.equal('null');
-
-                    // If comparison passes, this adds success context to the report
                     if (isPostGetMode) {
                         addContext(this, {
-                            title: 'Comparison Result for - ListWarningLabels (POST vs GET)',
+                            title: 'Secondary Response Details',
                             value: {
-                                'POST Endpoint': postBaseUrl + postPath,
-                                'GET Endpoint': getBaseUrl + getPath,
-                                'Comparison Difference': comparisonDiff
+                                URL: getBaseUrl + getPath,
+                                Method: 'GET',
+                                Status: secondaryInfo.statusCode,
+                                Body: secondaryInfo.body
                             }
                         });
                     }
 
                     if (isPostPostMode) {
                         addContext(this, {
-                            title: 'Comparison Result for - ListWarningLabels (POST Cert vs POST Consolidate)',
+                            title: 'Secondary Response Details',
                             value: {
-                                'CERT POST Endpoint': postBaseUrl + postPath,
-                                'Consolidate POST Endpoint': consolidatePostBaseUrl + postPath,
-                                'Comparison Difference': comparisonDiff
+                                URL: consolidatePostBaseUrl + '/api/ListWarningLabels',
+                                Method: 'POST',
+                                Status: secondaryInfo.statusCode,
+                                Body: secondaryInfo.body
                             }
                         });
                     }
 
-                    done();
+                    try {
+                        // Validate the HTTP status before comparison
+                        if (!postInfo.response || !secondaryInfo.response) {
+                            throw new Error('One of the responses is undefined');
+                        }
+
+                        if (isPostGetMode) {
+                            if (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200) {
+                                throw new Error(
+                                    `Unexpected status code(s). POST(${postBaseUrl}/api/ListWarningLabels): ${postInfo.statusCode}, GET(${getBaseUrl}${getPath}): ${secondaryInfo.statusCode}`
+                                );
+                            }
+                        }
+
+                        if (isPostPostMode) {
+                            if (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200) {
+                                throw new Error(
+                                    `Unexpected status code(s). POST(${postBaseUrl}/api/ListWarningLabels): ${postInfo.statusCode}, POST(${consolidatePostBaseUrl}/api/ListWarningLabels): ${secondaryInfo.statusCode}`
+                                );
+                            }
+                        }
+
+                        // This normalizes both responses before comparing them.
+                        // Sorting removes object-order issues and prevents false mismatches.
+                        const primarySorted = testdataGlobal.Sorting_Objects(postInfo.body || {});
+                        const secondarySorted = testdataGlobal.Sorting_Objects(secondaryInfo.body || {});
+
+                        // This finds field-level JSON differences.
+                        // If both responses are identical, JSON_Differences returns null.
+                        const differencesObject = testdataGlobal.JSON_Differences(primarySorted, secondarySorted);
+
+                        addContext(this, {
+                            title: 'Comparison Difference',
+                            value: testdataGlobal.Differences_Table(differencesObject)
+                        });
+
+                        expect(JSON.stringify(differencesObject)).to.be.equal('null');
+
+                        done();
+                    } catch (err) {
+                        done(new Error(`Failed to compare the responses - ${err}`));
+                    }
                 })
                 .catch(err => {
                     done(err);
@@ -258,4 +266,5 @@ describe('list_warning_labels ', function () {
         });
 
     });
+
 
