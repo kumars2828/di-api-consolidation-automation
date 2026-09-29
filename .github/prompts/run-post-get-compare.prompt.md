@@ -19,7 +19,7 @@ Requirements:
 - For a new API with three supplied URLs, use the active test file or `test=...`; read its dataset reference and mapper and derive the method from that file. Do not require the user to restate the mapper or a full JSON spec. Parse each URL into its own host and path; ask only for missing or ambiguous details.
 - For a new `scope=SINGLE` method, default to implementing both `POST_GET` and `POST_POST`. The three provided URLs supply primary, secondary GET and secondary POST endpoints; each run still selects only one mode.
 - Define `environment_1`, `environment_2`, `runMode`, `isPostGetMode`, and `isPostPostMode`; fetch a separate secondary token only in `POST_POST`, and use it for the secondary POST payload.
-- Check each required token is non-empty in `before`; never print a token to the console. Redact report tokens by default; show the real token in request contexts only on explicit user request, warning that report files then contain secrets.
+- Check each required token is non-empty in `before`; never print a token to the console. Show the real mapped AccessToken in both POST request contexts; redact it from response and difference contexts. Warn that local HTML/JSON reports will contain secrets.
 - Reuse existing mapping function from the target test.
 - Allow primary and secondary URLs to be fully different (base and path both independent).
 - Prefer helper-based base URL generation using config + testdataGlobal (detail_product style) for both calls.

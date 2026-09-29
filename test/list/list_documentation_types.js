@@ -12,10 +12,11 @@ chai.use(chaiHttp);
 const { expect, should } = chai;
 should();
 
-describe('list_ags_beers_strength_of_recommend ', function () {
+describe('list_documentation_types ', function () {
+
     const environment_1 = 'cert_containerized';
     const environment_2 = 'consolidate_cert';
-    const runMode = (process.env.LIST_AGS_BEERS_STRENGTH_OF_RECOMMENDATION_RUN_MODE || 'POST_GET').toUpperCase();
+    const runMode = (process.env.LIST_DOCUMENTATION_TYPES_RUN_MODE || 'POST_GET').toUpperCase();
     const isPostGetMode = runMode === 'POST_GET';
     const isPostPostMode = runMode === 'POST_POST';
     let secondaryToken;
@@ -23,7 +24,7 @@ describe('list_ags_beers_strength_of_recommend ', function () {
     before(async function () {
         this.timeout(40000);
         if (!isPostGetMode && !isPostPostMode) {
-            throw new Error(`Invalid LIST_AGS_BEERS_STRENGTH_OF_RECOMMENDATION_RUN_MODE: ${runMode}. Use POST_GET or POST_POST.`);
+            throw new Error(`Invalid LIST_DOCUMENTATION_TYPES_RUN_MODE: ${runMode}. Use POST_GET or POST_POST.`);
         }
         access_token.cert_containerized_token = await testdataGlobal.Access_Token_Generator(environment_1);
         if (!access_token.cert_containerized_token) {
@@ -37,13 +38,18 @@ describe('list_ags_beers_strength_of_recommend ', function () {
         }
     });
 
-    describe('list_ags_beers_strength_of_recommend - Returns a list of AGS BEERs strength of recommendation statements for Potentially Inappropriate Medications (PIMs), along with their internal identifiers.', function () {
-        Object.entries(list.ListAGSBeersStrengthOfRecommendation_dataObjects).forEach(([datasetName, dataset]) => {
-            it(`${datasetName} - Generate all list in ListAGSBeersStrengthOfRecommendation`, function (done) {
+    // Test Scenarios
+    describe('list_documentation_types - Returns the DrugToDrug and DrugToLifestyle interaction documentation values, along with their internal identifiers.', function () {
+
+        // Loop through all ListDocumentationTypes_dataObjects
+        [...Object.entries(list.ListDocumentationTypes_dataObjects)].forEach(([datasetName, dataset]) => { 
+
+            it(`${datasetName} - Generate all list in ListDocumentationTypes`, function (done) {
+
                 // Map each POST payload with its own environment's token.
-                const mappedData_Post = testdataGlobal.Mapping_Json45({ [datasetName]: dataset }, access_token.cert_containerized_token);
+                const mappedData_Post = testdataGlobal.Mapping_Json52({ [datasetName]: dataset }, access_token.cert_containerized_token);
                 const mappedData_Post_Consolidate = isPostPostMode
-                    ? testdataGlobal.Mapping_Json45({ [datasetName]: dataset }, secondaryToken)
+                    ? testdataGlobal.Mapping_Json52({ [datasetName]: dataset }, secondaryToken)
                     : null;
                 if (!mappedData_Post || (isPostPostMode && !mappedData_Post_Consolidate)) {
                     done(new Error(`Mapping for dataset ${datasetName} failed: dataset is null or undefined`));
@@ -56,17 +62,17 @@ describe('list_ags_beers_strength_of_recommend ', function () {
                 const postBaseUrl = testdataGlobal.Endpoint_Url_cert(postEnv);
                 const getBaseUrl = testdataGlobal.Endpoint_Url_staging_knowledge(getEnv);
                 const consolidatePostBaseUrl = testdataGlobal.Endpoint_Url_consolidate(environment_2);
-                const getPath = get_query.ListAGSBeersStrengthOfRecommendation_GetPath();
+                const getPath = get_query.ListDocumentationTypes_GetPath();
 
                 // Create only the requests needed by the selected comparison mode.
                 const postRequest = chai.request(postBaseUrl)
-                    .post('/api/ListAGSBeersStrengthOfRecommendation')
+                    .post('/api/ListDocumentationTypes')
                     .set('Content-Type', 'application/json')
                     .send(mappedData_Post);
                 const secondaryRequest = isPostGetMode
                     ? chai.request(getBaseUrl).get(getPath).set('Content-Type', 'application/json')
                     : chai.request(consolidatePostBaseUrl)
-                        .post('/api/ListAGSBeersStrengthOfRecommendation')
+                        .post('/api/ListDocumentationTypes')
                         .set('Content-Type', 'application/json')
                         .send(mappedData_Post_Consolidate);
                 const redactToken = (value) => {
@@ -87,7 +93,7 @@ describe('list_ags_beers_strength_of_recommend ', function () {
                 addContext(this, {
                     title: 'Request Body for POST Call',
                     value: {
-                        URL: postBaseUrl + '/api/ListAGSBeersStrengthOfRecommendation',
+                        URL: postBaseUrl + '/api/ListDocumentationTypes',
                         Method: 'POST',
                         Headers: { 'Content-Type': 'application/json' },
                         Body: mappedData_Post
@@ -103,7 +109,7 @@ describe('list_ags_beers_strength_of_recommend ', function () {
                 } : {
                     title: 'Request Body for Secondary Call',
                     value: {
-                        URL: consolidatePostBaseUrl + '/api/ListAGSBeersStrengthOfRecommendation',
+                        URL: consolidatePostBaseUrl + '/api/ListDocumentationTypes',
                         Method: 'POST',
                         Headers: { 'Content-Type': 'application/json' },
                         Body: mappedData_Post_Consolidate
@@ -141,7 +147,7 @@ describe('list_ags_beers_strength_of_recommend ', function () {
                     addContext(this, {
                         title: 'Primary Response Details',
                         value: {
-                            URL: postBaseUrl + '/api/ListAGSBeersStrengthOfRecommendation',
+                            URL: postBaseUrl + '/api/ListDocumentationTypes',
                             Method: 'POST',
                             Status: postInfo.statusCode,
                             Body: redactToken(postInfo.body)
@@ -150,7 +156,7 @@ describe('list_ags_beers_strength_of_recommend ', function () {
                     addContext(this, {
                         title: 'Secondary Response Details',
                         value: {
-                            URL: isPostGetMode ? getBaseUrl + getPath : consolidatePostBaseUrl + '/api/ListAGSBeersStrengthOfRecommendation',
+                            URL: isPostGetMode ? getBaseUrl + getPath : consolidatePostBaseUrl + '/api/ListDocumentationTypes',
                             Method: isPostGetMode ? 'GET' : 'POST',
                             Status: secondaryInfo.statusCode,
                             Body: redactToken(secondaryInfo.body)
@@ -166,14 +172,16 @@ describe('list_ags_beers_strength_of_recommend ', function () {
                         value: testdataGlobal.Differences_Table(redactToken(differencesObject))
                     });
 
-                    expect(postInfo.statusCode, `POST ${postBaseUrl}/api/ListAGSBeersStrengthOfRecommendation`).to.equal(200);
+                    expect(postInfo.statusCode, `POST ${postBaseUrl}/api/ListDocumentationTypes`).to.equal(200);
                     expect(secondaryInfo.statusCode, isPostGetMode
                         ? `GET ${getBaseUrl}${getPath}`
-                        : `POST ${consolidatePostBaseUrl}/api/ListAGSBeersStrengthOfRecommendation`).to.equal(200);
+                        : `POST ${consolidatePostBaseUrl}/api/ListDocumentationTypes`).to.equal(200);
                     expect(differencesObject).to.be.null;
                 })().then(() => done(), (error) => done(new Error(`Failed to compare the responses - ${error}`)));
             }).timeout(120000);
         });
+
     });
+
 });
 

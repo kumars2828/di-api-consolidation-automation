@@ -1,5 +1,5 @@
 {
-  "reporterEnabled": "mochawesome, mocha-junit-reporter",
+  "reporterEnabled": "mochawesome, mocha-junit-reporter, ./utilities/differences-reporter.cjs",
   "mochawesomeReporterOptions": {
     "reportDir": "mochawesome-report",
     "reportFilename": "report",
