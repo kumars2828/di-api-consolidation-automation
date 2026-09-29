@@ -74,6 +74,14 @@ export default {
                 Password: "dGVtcHBhc3M0MTI="
             }
         },
+        consolidate_cert: {
+            baseUrl: "https://api-consolidation.cert.gsdd.net",
+            access_token_url: "/auth/api/AccessToken",
+            access_token_credentails: {
+                Username: "NPotlapalli",
+                Password: "dGVtcHBhc3M0MTI="
+            }
+        },
     },
 
     // Access Token Generator

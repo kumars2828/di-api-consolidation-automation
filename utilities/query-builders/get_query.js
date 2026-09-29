@@ -48,5 +48,14 @@ export default {
 
     ListAGSBeersQualityOfEvidence_GetPath: function buildListAGSBeersQualityOfEvidenceGetPath() {
         return '/knowledge/beers/quality-of-evidence';
+    },
+
+    ListAGSBeersStrengthOfRecommendation_GetPath: function buildListAGSBeersStrengthOfRecommendationGetPath() {
+        return '/knowledge/beers/strength-of-recommendation';
+    },
+
+    // Static GET path for ListDocumentationTypes (no query parameters)
+    ListDocumentationTypes_GetPath: function buildListDocumentationTypesGetPath() {
+        return '/knowledge/list/documentation-type';
     }
 };
