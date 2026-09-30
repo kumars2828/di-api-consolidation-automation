@@ -1,5 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { mkdtempSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 import { spawn, spawnSync } from 'node:child_process';
 
 const mode = process.argv[2];
@@ -35,10 +37,6 @@ console.log(`Mode: ${mode}`);
 console.log(`Matched scripts (${matchedScriptNames.length}):`);
 matchedScriptNames.forEach((scriptName) => console.log(`- ${scriptName}`));
 
-if (isListOnly) {
-  process.exit(0);
-}
-
 const reportDir = resolve(process.cwd(), 'mochawesome-report');
 const reportHtml = resolve(reportDir, 'report.html');
 const reportJson = resolve(reportDir, 'report.json');
@@ -51,7 +49,7 @@ const testRuns = [];
 
 for (const scriptName of matchedScriptNames) {
   const script = scripts[scriptName];
-  const match = script.match(/^([A-Z_]+)=(POST_GET|POST_POST) mocha (\.\/test\/\S+\.js)\s/);
+  const match = script.match(/^(?:cross-env\s+)?([A-Z_]+)=(POST_GET|POST_POST) mocha (\.\/test\/\S+\.js)\s/);
   if (!match || match[2] !== mode) {
     console.error(`Cannot include script in batch: ${scriptName}`);
     process.exit(1);
@@ -60,15 +58,16 @@ for (const scriptName of matchedScriptNames) {
   testRuns.push({ scriptName, testFile: match[3], environmentVariable: match[1] });
 }
 
+if (isListOnly) {
+  process.exit(0);
+}
+
 if (isParallel) {
-  const parallelRoot = resolve(process.cwd(), '.parallel-reports', mode);
+  const parallelRoot = mkdtempSync(resolve(tmpdir(), `di-api-${mode.toLowerCase()}-`));
   const differenceDir = resolve(process.cwd(), 'difference-reports');
   const mochawesomeDir = resolve(parallelRoot, 'mochawesome');
-  const junitDir = resolve(parallelRoot, 'junit');
   const markdownDir = resolve(parallelRoot, 'markdown');
-  rmSync(parallelRoot, { recursive: true, force: true });
   mkdirSync(mochawesomeDir, { recursive: true });
-  mkdirSync(junitDir, { recursive: true });
   mkdirSync(markdownDir, { recursive: true });
   mkdirSync(differenceDir, { recursive: true });
 
@@ -87,15 +86,12 @@ if (isParallel) {
     const name = safeName(scriptName);
     const configPath = resolve(parallelRoot, `${name}.json`);
     const config = {
-      reporterEnabled: 'mochawesome, mocha-junit-reporter, ./utilities/differences-reporter.cjs',
+      reporterEnabled: 'mochawesome, ./utilities/differences-reporter.cjs',
       mochawesomeReporterOptions: {
         reportDir: resolve(mochawesomeDir, name),
         reportFilename: 'report',
         quiet: true,
         overwrite: true
-      },
-      mochaJunitReporterReporterOptions: {
-        mochaFile: resolve(junitDir, `${name}.xml`)
       }
     };
     writeFileSync(configPath, JSON.stringify(config));
@@ -147,9 +143,11 @@ if (isParallel) {
     ], { stdio: 'inherit' })
     : mergeResult;
 
+  const exitCode = runResults.some((code) => code !== 0) || generateResult.status !== 0 ? 1 : 0;
+  rmSync(parallelRoot, { recursive: true, force: true });
   console.log(`Parallel Markdown report: ${combinedMarkdownPath}`);
-  console.log(`Parallel Mochawesome reports: ${mochawesomeDir}`);
-  process.exit(runResults.some((code) => code !== 0) || generateResult.status !== 0 ? 1 : 0);
+  console.log(`Parallel Mochawesome report: ${reportHtml}`);
+  process.exit(exitCode);
 }
 
 const testFiles = testRuns.map(({ testFile }) => testFile);
