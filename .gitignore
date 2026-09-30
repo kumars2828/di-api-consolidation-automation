@@ -5,7 +5,5 @@ mochawesome-report
 package-lock.json
 response-report/**/*.json
 junit-report.xml
-/difference-reports/
 /mochawesome-report
 /mochawesome.DS_Store
-/.parallel-reports/
