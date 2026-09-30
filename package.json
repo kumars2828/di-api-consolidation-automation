@@ -15,6 +15,8 @@
     "ListAGSBeersStrengthOfRecommendationPostPost": "cross-env LIST_AGS_BEERS_STRENGTH_OF_RECOMMENDATION_RUN_MODE=POST_POST mocha ./test/list/list_ags_beers_strength_of_recommend.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "ListDocumentationTypesPostGet": "cross-env LIST_DOCUMENTATION_TYPES_RUN_MODE=POST_GET mocha ./test/list/list_documentation_types.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "ListDocumentationTypesPostPost": "cross-env LIST_DOCUMENTATION_TYPES_RUN_MODE=POST_POST mocha ./test/list/list_documentation_types.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
+    "ListTherapeuticConceptByProductPostGet": "cross-env LIST_THERAPEUTIC_CONCEPT_BY_PRODUCT_RUN_MODE=POST_GET mocha ./test/list/list_therapeutic_concept_by_prodct.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
+    "ListTherapeuticConceptByProductPostPost": "cross-env LIST_THERAPEUTIC_CONCEPT_BY_PRODUCT_RUN_MODE=POST_POST mocha ./test/list/list_therapeutic_concept_by_prodct.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "DetailProductPostGet": "cross-env DETAIL_PRODUCT_RUN_MODE=POST_GET mocha ./test/detail_dose/detail_product.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "DetailProductPostPost": "cross-env DETAIL_PRODUCT_RUN_MODE=POST_POST mocha ./test/detail_dose/detail_product.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "RunAllPostGet": "node ./utilities/run-mode-batch.js POST_GET",
