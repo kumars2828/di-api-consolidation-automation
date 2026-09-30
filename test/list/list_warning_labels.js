@@ -57,9 +57,15 @@ describe('list_warning_labels ', function () {
             // This maps the dataset into the exact request JSON expected by the API.
             // mappedData_Post = cert POST payload
             // mappedData_Post_Consolidate = consolidate POST payload
-            const mappedData_Post = testdataGlobal.Mapping_Json118({ [datasetName]: dataset }, access_token.staging_containerized_token);
+            const certToken = dataset.tokenType === 'invalid'
+                ? 'ten'
+                : access_token.staging_containerized_token;
+            const consolidateToken = dataset.tokenType === 'invalid'
+                ? 'ten'
+                : access_token.consolidate_token;
+            const mappedData_Post = testdataGlobal.Mapping_Json118({ [datasetName]: dataset }, certToken);
             const mappedData_Post_Consolidate = isPostPostMode
-                ? testdataGlobal.Mapping_Json118({ [datasetName]: dataset }, access_token.consolidate_token)
+                ? testdataGlobal.Mapping_Json118({ [datasetName]: dataset }, consolidateToken)
                 : null;
 
             // If mapping fails, stop the test immediately.
@@ -85,7 +91,7 @@ describe('list_warning_labels ', function () {
                 .send(mappedData_Post);
 
             // GET request to staging environment
-            const getRequest = isPostGetMode
+            const getRequest = isPostGetMode && !dataset.postOnly
                 ? chai.request(getBaseUrl)
                     .get(getPath)
                     .set('Content-Type', 'application/json')
@@ -112,7 +118,7 @@ describe('list_warning_labels ', function () {
                 }
             });
 
-            if (isPostGetMode) {
+            if (isPostGetMode && !dataset.postOnly) {
                 addContext(this, {
                     title: 'Request URL for GET Call',
                     value: {
@@ -128,7 +134,7 @@ describe('list_warning_labels ', function () {
             // This executes both requests in parallel.
             // We wait for both responses before comparing them.
             const activeRequests = isPostGetMode
-                ? [postRequest, getRequest]
+                ? (dataset.postOnly ? [postRequest] : [postRequest, getRequest])
                 : [postRequest, consolidatePostRequest];
 
             Promise.allSettled(activeRequests)
@@ -156,6 +162,15 @@ describe('list_warning_labels ', function () {
                     // This normalizes the Promise result to a common object structure:
                     // response, statusCode, body, error
                     const normalizeResult = (result) => {
+                        if (!result) {
+                            return {
+                                response: null,
+                                statusCode: null,
+                                body: {},
+                                error: null
+                            };
+                        }
+
                         if (result.status === 'fulfilled') {
                             return {
                                 response: result.value,
@@ -191,7 +206,7 @@ describe('list_warning_labels ', function () {
                         }
                     });
 
-                    if (isPostGetMode) {
+                    if (isPostGetMode && !dataset.postOnly) {
                         addContext(this, {
                             title: 'Secondary Response Details',
                             value: {
@@ -216,42 +231,48 @@ describe('list_warning_labels ', function () {
                     }
 
                     try {
-                        // Validate the HTTP status before comparison
-                        if (!postInfo.response || !secondaryInfo.response) {
-                            throw new Error('One of the responses is undefined');
+                        if (!postInfo.response) {
+                            throw new Error('The cert POST response is undefined');
                         }
 
-                        if (isPostGetMode) {
-                            if (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200) {
-                                throw new Error(
-                                    `Unexpected status code(s). POST(${postBaseUrl}/api/ListWarningLabels): ${postInfo.statusCode}, GET(${getBaseUrl}${getPath}): ${secondaryInfo.statusCode}`
-                                );
-                            }
+                        expect(postInfo.statusCode, 'Cert POST status').to.equal(dataset.expectedStatus);
+
+                        if (!dataset.postOnly && !secondaryInfo.response) {
+                            throw new Error('The secondary response is undefined');
+                        }
+
+                        if (isPostGetMode && !dataset.postOnly) {
+                            expect(secondaryInfo.statusCode, 'GET status').to.equal(dataset.expectedStatus);
                         }
 
                         if (isPostPostMode) {
-                            if (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200) {
-                                throw new Error(
-                                    `Unexpected status code(s). POST(${postBaseUrl}/api/ListWarningLabels): ${postInfo.statusCode}, POST(${consolidatePostBaseUrl}/api/ListWarningLabels): ${secondaryInfo.statusCode}`
-                                );
+                            expect(secondaryInfo.statusCode, 'Consolidate POST status').to.equal(dataset.expectedStatus);
+                        }
+
+                        if (dataset.expectedError) {
+                            expect(postInfo.body, 'Cert POST error body').to.deep.include(dataset.expectedError);
+                            if (isPostPostMode) {
+                                expect(secondaryInfo.body, 'Consolidate POST error body').to.deep.include(dataset.expectedError);
                             }
                         }
 
-                        // This normalizes both responses before comparing them.
-                        // Sorting removes object-order issues and prevents false mismatches.
-                        const primarySorted = testdataGlobal.Sorting_Objects(postInfo.body || {});
-                        const secondarySorted = testdataGlobal.Sorting_Objects(secondaryInfo.body || {});
+                        if (dataset.expectedStatus === 200) {
+                            // This normalizes both responses before comparing them.
+                            // Sorting removes object-order issues and prevents false mismatches.
+                            const primarySorted = testdataGlobal.Sorting_Objects(postInfo.body || {});
+                            const secondarySorted = testdataGlobal.Sorting_Objects(secondaryInfo.body || {});
 
-                        // This finds field-level JSON differences.
-                        // If both responses are identical, JSON_Differences returns null.
-                        const differencesObject = testdataGlobal.JSON_Differences(primarySorted, secondarySorted);
+                            // This finds field-level JSON differences.
+                            // If both responses are identical, JSON_Differences returns null.
+                            const differencesObject = testdataGlobal.JSON_Differences(primarySorted, secondarySorted);
 
-                        addContext(this, {
-                            title: 'Comparison Difference',
-                            value: testdataGlobal.Differences_Table(differencesObject)
-                        });
+                            addContext(this, {
+                                title: 'Comparison Difference',
+                                value: testdataGlobal.Differences_Table(differencesObject)
+                            });
 
-                        expect(JSON.stringify(differencesObject)).to.be.equal('null');
+                            expect(JSON.stringify(differencesObject)).to.be.equal('null');
+                        }
 
                         done();
                     } catch (err) {

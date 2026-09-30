@@ -1623,25 +1623,32 @@ export default {
 
         // Iterate over each option in the input parameter
         for (const [datasetName, dataset] of Object.entries(dataObjects)) {
+            const jsonOutput = {};
 
-            // Map ProductId - Assuming you want just the first entry
-            const productId = {};
-            for (const [idType, ids] of Object.entries(dataset.ProductId)) {
-                if (ids.length > 0) {
-                    productId.IdType = idType;
-                    productId.Id = ids[0];  // Only taking the first ID for now
+            if (dataset.ProductId) {
+                const productId = {};
+                for (const [idType, ids] of Object.entries(dataset.ProductId)) {
+                    if (ids.length > 0) {
+                        productId.IdType = idType;
+                        productId.Id = ids[0];
+                    }
                 }
+                jsonOutput.ProductId = productId;
             }
 
-            // Base JSON structure - Includes Drug Identifier
-            const jsonOutput = {
-                ProductId: productId, // Single object, not an array
-                ReturnBeersInfo: dataset.returnBeersInfo,
-                ReturnIngredientStrengthRouteForm: dataset.returnIngredientStrengthRouteForm,
-                ReturnRxNormSynonyms: dataset.returnRxNormSynonyms,
-                ReturnProductModifier: dataset.returnProductModifier,
-                AccessToken: Token, // Placeholder
-            };
+            if (dataset.returnBeersInfo !== undefined) {
+                jsonOutput.ReturnBeersInfo = dataset.returnBeersInfo;
+            }
+            if (dataset.returnIngredientStrengthRouteForm !== undefined) {
+                jsonOutput.ReturnIngredientStrengthRouteForm = dataset.returnIngredientStrengthRouteForm;
+            }
+            if (dataset.returnRxNormSynonyms !== undefined) {
+                jsonOutput.ReturnRxNormSynonyms = dataset.returnRxNormSynonyms;
+            }
+            if (dataset.returnProductModifier !== undefined) {
+                jsonOutput.ReturnProductModifier = dataset.returnProductModifier;
+            }
+            jsonOutput.AccessToken = Token;
 
             // Store the mapped JSON under the dataset name
             mappedResults[datasetName] = jsonOutput;

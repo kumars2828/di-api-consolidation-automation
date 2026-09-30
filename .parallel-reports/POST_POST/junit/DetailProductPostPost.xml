@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="10.937" tests="8" failures="8">
+  <testsuite name="Root Suite" timestamp="2026-09-29T13:04:15" tests="0" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="detail_product " timestamp="2026-09-29T13:04:15" tests="0" file="/Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="detail_product - This method returns all detailed product information for a supplied product identifier, including route of administration and dose form" timestamp="2026-09-29T13:04:18" tests="8" file="/Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js" time="7.612" failures="8">
+    <testcase name="detail_product  detail_product - This method returns all detailed product information for a supplied product identifier, including route of administration and dose form dataset_1 - Generate all Details in DetailProduct [critical] " time="0.995" classname="dataset_1 - Generate all Details in DetailProduct [critical] ">
+      <failure message="Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/DetailProduct): 200, POST(https://api-consolidation.dev.gsdd.net/api/DetailProduct): 500" type="Error"><![CDATA[Error: Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/DetailProduct): 200, POST(https://api-consolidation.dev.gsdd.net/api/DetailProduct): 500
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js:252:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="detail_product  detail_product - This method returns all detailed product information for a supplied product identifier, including route of administration and dose form dataset_2 - Generate all Details in DetailProduct [critical] " time="0.950" classname="dataset_2 - Generate all Details in DetailProduct [critical] ">
+      <failure message="Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/DetailProduct): 200, POST(https://api-consolidation.dev.gsdd.net/api/DetailProduct): 500" type="Error"><![CDATA[Error: Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/DetailProduct): 200, POST(https://api-consolidation.dev.gsdd.net/api/DetailProduct): 500
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js:252:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="detail_product  detail_product - This method returns all detailed product information for a supplied product identifier, including route of administration and dose form dataset_3 - Generate all Details in DetailProduct [critical] " time="0.926" classname="dataset_3 - Generate all Details in DetailProduct [critical] ">
+      <failure message="Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/DetailProduct): 200, POST(https://api-consolidation.dev.gsdd.net/api/DetailProduct): 500" type="Error"><![CDATA[Error: Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/DetailProduct): 200, POST(https://api-consolidation.dev.gsdd.net/api/DetailProduct): 500
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js:252:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="detail_product  detail_product - This method returns all detailed product information for a supplied product identifier, including route of administration and dose form dataset_4 - Generate all Details in DetailProduct [critical] " time="0.955" classname="dataset_4 - Generate all Details in DetailProduct [critical] ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;Attributes&quot;:{&quot;oldValue&quot;:null,&quot;newVa…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"Attributes":{"oldValue":null,"newVa…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js:252:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="detail_product  detail_product - This method returns all detailed product information for a supplied product identifier, including route of administration and dose form dataset_5 - Generate all Details in DetailProduct [critical] " time="0.960" classname="dataset_5 - Generate all Details in DetailProduct [critical] ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;Attributes&quot;:{&quot;oldValue&quot;:null,&quot;newVa…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"Attributes":{"oldValue":null,"newVa…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js:252:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="detail_product  detail_product - This method returns all detailed product information for a supplied product identifier, including route of administration and dose form dataset_6 - Generate all Details in DetailProduct [critical] " time="0.928" classname="dataset_6 - Generate all Details in DetailProduct [critical] ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;Attributes&quot;:{&quot;oldValue&quot;:null,&quot;newVa…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"Attributes":{"oldValue":null,"newVa…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js:252:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="detail_product  detail_product - This method returns all detailed product information for a supplied product identifier, including route of administration and dose form dataset_7 - Generate all Details in DetailProduct [critical] " time="0.945" classname="dataset_7 - Generate all Details in DetailProduct [critical] ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;AGSBeersCriteriaItems[0].Profession…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"AGSBeersCriteriaItems[0].Profession…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js:252:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="detail_product  detail_product - This method returns all detailed product information for a supplied product identifier, including route of administration and dose form dataset_8 - Generate all Details in DetailProduct [critical] " time="0.936" classname="dataset_8 - Generate all Details in DetailProduct [critical] ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;Attributes&quot;:{&quot;oldValue&quot;:null,&quot;newVa…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"Attributes":{"oldValue":null,"newVa…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/detail_dose/detail_product.js:252:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>
