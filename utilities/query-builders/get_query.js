@@ -54,6 +54,19 @@ export default {
         return '/knowledge/beers/strength-of-recommendation';
     },
 
+    // Builds the ListTherapeuticConceptByProduct GET query from its product filter
+    ListTherapeuticConceptByProduct_GetPath: function buildListTherapeuticConceptByProductGetPath(dataset) {
+        const productOrPackageFilter = dataset?.PackageOrProductFilter;
+        const [type, identifiers] = Object.entries(productOrPackageFilter || {})[0] || [];
+        const id = Array.isArray(identifiers) ? identifiers[0] : identifiers;
+        if (!type || id === undefined || id === null || id === '') {
+            throw new Error('dataset with a PackageOrProductFilter identifier is required to build ListTherapeuticConceptByProduct GET path');
+        }
+
+        const query = new URLSearchParams({ id: String(id), type });
+        return `/knowledge/product/therapeutic-concept?${query.toString()}`;
+    },
+
     // Static GET path for ListDocumentationTypes (no query parameters)
     ListDocumentationTypes_GetPath: function buildListDocumentationTypesGetPath() {
         return '/knowledge/list/documentation-type';
