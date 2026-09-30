@@ -984,10 +984,10 @@ export default {
             MaxResults: "25"
         },
         dataset_4: {
-            MaxResults: "40"
+            MaxResults: "0"
         },
         dataset_5: {
-            MaxResults: "3"
+           
         },
 
     },
@@ -1005,10 +1005,10 @@ export default {
             MaxResults: "25"
         },
         dataset_4: {
-            MaxResults: "40"
+            MaxResults: "0"
         },
         dataset_5: {
-            MaxResults: "2"
+            
         },
 
     },
@@ -1293,10 +1293,10 @@ export default {
             MaxResults: "25"
         },
         dataset_4: {
-            MaxResults: "40"
+            MaxResults: "0"
         },
         dataset_5: {
-            MaxResults: "0"
+           
         },
 
     },
@@ -1441,10 +1441,10 @@ ListDocumentationTypes_dataObjects: {
         MaxResults: "25"
     },
     dataset_4: {
-        MaxResults: "20"
+        MaxResults: "0"
     },
     dataset_5: {
-        MaxResults: "0"
+       
     },
 
 },
@@ -4648,57 +4648,82 @@ ListUnits_dataObjects: {
 // Reports - ListWarningLabels Data Objects 
 ListWarningLabels_dataObjects: {
 
-    dataset_1: {
+    valid_warning_label_id: {
         FilterType: "WarningLabelId",
-            Filter: "1369",
-                LanguageCode: "es",
-                    VendorId: "1",
-                        MaxResults: "15"
+        Filter: "1369",
+        LanguageCode: "es",
+        VendorId: "1",
+        MaxResults: "15",
+        expectedStatus: 200
     },
-    dataset_2: {
+    valid_warning_label_text_french: {
         FilterType: "WarningLabelText",
-            Filter: "%para%",
-                LanguageCode: "fr",
-                    MaxResults: "20"
+        Filter: "%para%",
+        LanguageCode: "fr",
+        MaxResults: "20",
+        expectedStatus: 200
     },
-    dataset_3: {
-        FilterType: "WarningLabelText",
-            Filter: "%Limite%",
-                LanguageCode: "es",
-                    MaxResults: "20"
-    },
-    dataset_4: {
-        FilterType: "WarningLabelText",
-            Filter: "%tomar%",
-                LanguageCode: "es",
-                    VendorId: "1",
-                        MaxResults: "30"
-    },
-    dataset_5: {
-        FilterType: "WarningLabelText",
-            Filter: "%prendre%",
-                LanguageCode: "es",
-                    VendorId: "1",
-                        MaxResults: "20"
-    },
-    dataset_6: {
+    valid_warning_label_id_without_vendor: {
         FilterType: "WarningLabelId",
-            Filter: "10",
-                LanguageCode: "es",
-                    MaxResults: "20"
+        Filter: "10",
+        LanguageCode: "es",
+        MaxResults: "20",
+        expectedStatus: 200
     },
-    dataset_7: {
-        FilterType: "WarningLabelId",
-            Filter: "12",
-                LanguageCode: "fr",
-                    MaxResults: "20"
+    valid_warning_label_text_spanish: {
+        FilterType: "WarningLabelText",
+        Filter: "%tomar%",
+        LanguageCode: "es",
+        VendorId: "1",
+        MaxResults: "30",
+        expectedStatus: 200
     },
-    dataset_8: {
+    max_results_omitted: {
         FilterType: "WarningLabelId",
-            Filter: "13",
-                LanguageCode: "fr",
-                    VendorId: "1",
-                        MaxResults: "100"
+        Filter: "1369",
+        LanguageCode: "es",
+        expectedStatus: 200
+    },
+    missing_language_code: {
+        FilterType: "WarningLabelText",
+        Filter: "%para%",
+        MaxResults: "20",
+        expectedStatus: 400
+    },
+    invalid_filter_value: {
+        FilterType: "WarningLabelText",
+        Filter: "10",
+        LanguageCode: "es",
+        MaxResults: "20",
+        expectedStatus: 400
+    },
+    max_results_out_of_range: {
+        FilterType: "WarningLabelText",
+        Filter: "%tomar%",
+        LanguageCode: "es",
+        VendorId: "1",
+        MaxResults: "20000000000",
+        expectedStatus: 400
+    },
+    empty_filter: {
+        FilterType: "WarningLabelText",
+        Filter: "",
+        LanguageCode: "fr",
+        MaxResults: "20",
+        expectedStatus: 400
+    },
+    invalid_access_token: {
+        FilterType: "WarningLabelText",
+        Filter: "%para%",
+        LanguageCode: "fr",
+        MaxResults: "20",
+        tokenType: "invalid",
+        postOnly: true,
+        expectedStatus: 400,
+        expectedError: {
+            Type: "Authentication Error",
+            Text: "AccessToken is invalid or expired"
+        }
     },
 
 },

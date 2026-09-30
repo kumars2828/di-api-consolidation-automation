@@ -1,0 +1,9 @@
+{
+  "reporterEnabled": "mochawesome, ./utilities/differences-reporter.cjs",
+  "mochawesomeReporterOptions": {
+    "reportDir": "mochawesome-report",
+    "reportFilename": "report",
+    "quiet": true,
+    "overwrite": true
+  }
+}

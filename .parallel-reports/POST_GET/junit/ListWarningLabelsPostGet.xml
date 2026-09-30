@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="11.009" tests="8" failures="8">
+  <testsuite name="Root Suite" timestamp="2026-09-29T13:00:03" tests="0" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="list_warning_labels " timestamp="2026-09-29T13:00:03" tests="8" file="/Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/list/list_warning_labels.js" time="11.007" failures="8">
+    <testcase name="list_warning_labels  dataset_1 - Generate all list in ListWarningLabels " time="3.397" classname="dataset_1 - Generate all list in ListWarningLabels ">
+      <failure message="Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/ListWarningLabels): 200, GET(https://cert-staging-api.druginfo.elsevier.systems/knowledge/warning-label/label?type=WarningLabelId&amp;q=1369&amp;languageCode=es&amp;vendorId=1&amp;returnShortText=true&amp;size=15): 204" type="Error"><![CDATA[Error: Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/ListWarningLabels): 200, GET(https://cert-staging-api.druginfo.elsevier.systems/knowledge/warning-label/label?type=WarningLabelId&q=1369&languageCode=es&vendorId=1&returnShortText=true&size=15): 204
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/list/list_warning_labels.js:258:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="list_warning_labels  dataset_2 - Generate all list in ListWarningLabels " time="1.175" classname="dataset_2 - Generate all list in ListWarningLabels ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;WarningLabels&quot;:{&quot;oldValue&quot;:[{&quot;Vendo…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"WarningLabels":{"oldValue":[{"Vendo…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/list/list_warning_labels.js:258:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="list_warning_labels  dataset_3 - Generate all list in ListWarningLabels " time="0.903" classname="dataset_3 - Generate all list in ListWarningLabels ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;WarningLabels&quot;:{&quot;oldValue&quot;:[{&quot;Vendo…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"WarningLabels":{"oldValue":[{"Vendo…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/list/list_warning_labels.js:258:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="list_warning_labels  dataset_4 - Generate all list in ListWarningLabels " time="0.919" classname="dataset_4 - Generate all list in ListWarningLabels ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;WarningLabels&quot;:{&quot;oldValue&quot;:[{&quot;Vendo…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"WarningLabels":{"oldValue":[{"Vendo…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/list/list_warning_labels.js:258:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="list_warning_labels  dataset_5 - Generate all list in ListWarningLabels " time="0.927" classname="dataset_5 - Generate all list in ListWarningLabels ">
+      <failure message="Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/ListWarningLabels): 200, GET(https://cert-staging-api.druginfo.elsevier.systems/knowledge/warning-label/label?type=WarningLabelText&amp;q=%25prendre%25&amp;languageCode=es&amp;vendorId=1&amp;returnShortText=true&amp;size=20): 204" type="Error"><![CDATA[Error: Failed to compare the responses - Error: Unexpected status code(s). POST(https://cert-api.gsdd.net/api/ListWarningLabels): 200, GET(https://cert-staging-api.druginfo.elsevier.systems/knowledge/warning-label/label?type=WarningLabelText&q=%25prendre%25&languageCode=es&vendorId=1&returnShortText=true&size=20): 204
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/list/list_warning_labels.js:258:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="list_warning_labels  dataset_6 - Generate all list in ListWarningLabels " time="0.889" classname="dataset_6 - Generate all list in ListWarningLabels ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;WarningLabels&quot;:{&quot;oldValue&quot;:[{&quot;Vendo…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"WarningLabels":{"oldValue":[{"Vendo…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/list/list_warning_labels.js:258:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="list_warning_labels  dataset_7 - Generate all list in ListWarningLabels " time="0.884" classname="dataset_7 - Generate all list in ListWarningLabels ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;WarningLabels&quot;:{&quot;oldValue&quot;:[{&quot;Vendo…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"WarningLabels":{"oldValue":[{"Vendo…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/list/list_warning_labels.js:258:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+    <testcase name="list_warning_labels  dataset_8 - Generate all list in ListWarningLabels " time="0.838" classname="dataset_8 - Generate all list in ListWarningLabels ">
+      <failure message="Failed to compare the responses - AssertionError: expected &apos;{&quot;WarningLabels&quot;:{&quot;oldValue&quot;:[{&quot;Vendo…&apos; to equal &apos;null&apos;" type="Error"><![CDATA[Error: Failed to compare the responses - AssertionError: expected '{"WarningLabels":{"oldValue":[{"Vendo…' to equal 'null'
+    at file:///Users/kumars28/Documents/GitHub/di-api-consolidation-automation/test/list/list_warning_labels.js:258:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

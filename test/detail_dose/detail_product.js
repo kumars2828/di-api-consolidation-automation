@@ -50,9 +50,15 @@ describe('detail_product ', function () {
             it(`${datasetName} - Generate all Details in DetailProduct [critical] `, function (done) {
 
                 // Map the dataset into the POST payload for cert (and consolidate, if POST_POST mode)
-                const mappedData_Post = testdataGlobal.Mapping_Json17({ [datasetName]: dataset }, access_token.staging_containerized_token);
+                const certToken = dataset.tokenType === 'invalid'
+                    ? 'ten'
+                    : access_token.staging_containerized_token;
+                const consolidateToken = dataset.tokenType === 'invalid'
+                    ? 'ten'
+                    : access_token.consolidate_token;
+                const mappedData_Post = testdataGlobal.Mapping_Json17({ [datasetName]: dataset }, certToken);
                 const mappedData_Post_Consolidate = isPostPostMode
-                    ? testdataGlobal.Mapping_Json17({ [datasetName]: dataset }, access_token.consolidate_token)
+                    ? testdataGlobal.Mapping_Json17({ [datasetName]: dataset }, consolidateToken)
                     : null;
 
                 // If the mapping failed, terminate the test
@@ -76,7 +82,7 @@ describe('detail_product ', function () {
                     .set('Content-Type', 'application/json')
                     .send(mappedData_Post);
 
-                const getRequest = isPostGetMode
+                const getRequest = isPostGetMode && !dataset.postOnly
                     ? chai.request(getBaseUrl)
                         .get(getPath)
                         .set('Content-Type', 'application/json')
@@ -102,7 +108,7 @@ describe('detail_product ', function () {
                     }
                 });
 
-                if (isPostGetMode) {
+                if (isPostGetMode && !dataset.postOnly) {
                     addContext(this, {
                         title: 'Request URL for GET Call',
                         value: {
@@ -130,7 +136,7 @@ describe('detail_product ', function () {
                 }
 
                 const activeRequests = isPostGetMode
-                    ? [postRequest, getRequest]
+                    ? (dataset.postOnly ? [postRequest] : [postRequest, getRequest])
                     : [postRequest, consolidatePostRequest];
 
                 Promise.allSettled(activeRequests)
@@ -156,6 +162,15 @@ describe('detail_product ', function () {
 
                         // Normalize a settled/rejected promise result into { response, statusCode, body, error }
                         const normalizeResult = (result) => {
+                            if (!result) {
+                                return {
+                                    response: null,
+                                    statusCode: null,
+                                    body: {},
+                                    error: null
+                                };
+                            }
+
                             if (result.status === 'fulfilled') {
                                 return {
                                     response: result.value,
@@ -189,7 +204,7 @@ describe('detail_product ', function () {
                             }
                         });
 
-                        if (isPostGetMode) {
+                        if (isPostGetMode && !dataset.postOnly) {
                             addContext(this, {
                                 title: 'GET Response Details',
                                 value: {
@@ -214,38 +229,44 @@ describe('detail_product ', function () {
                         }
 
                         try {
-                            // Fail fast if either call didn't return a response
-                            if (!postInfo.response || !secondaryInfo.response) {
-                                throw new Error('One of the responses is undefined');
+                            if (!postInfo.response) {
+                                throw new Error('The cert POST response is undefined');
                             }
 
-                            if (isPostGetMode) {
-                                if (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200) {
-                                    throw new Error(
-                                        `Unexpected status code(s). POST(${postBaseUrl}/api/DetailProduct): ${postInfo.statusCode}, GET(${getBaseUrl}${getPath}): ${secondaryInfo.statusCode}`
-                                    );
-                                }
+                            expect(postInfo.statusCode, 'Cert POST status').to.equal(dataset.expectedStatus);
+
+                            if (!dataset.postOnly && !secondaryInfo.response) {
+                                throw new Error('The secondary response is undefined');
+                            }
+
+                            if (isPostGetMode && !dataset.postOnly) {
+                                expect(secondaryInfo.statusCode, 'GET status').to.equal(dataset.expectedStatus);
                             }
 
                             if (isPostPostMode) {
-                                if (postInfo.statusCode !== 200 || secondaryInfo.statusCode !== 200) {
-                                    throw new Error(
-                                        `Unexpected status code(s). POST(${postBaseUrl}/api/DetailProduct): ${postInfo.statusCode}, POST(${consolidatePostBaseUrl}/api/DetailProduct): ${secondaryInfo.statusCode}`
-                                    );
+                                expect(secondaryInfo.statusCode, 'Consolidate POST status').to.equal(dataset.expectedStatus);
+                            }
+
+                            if (dataset.expectedError) {
+                                expect(postInfo.body, 'Cert POST error body').to.deep.include(dataset.expectedError);
+                                if (isPostPostMode) {
+                                    expect(secondaryInfo.body, 'Consolidate POST error body').to.deep.include(dataset.expectedError);
                                 }
                             }
 
-                            // Sort both bodies and diff them field by field
-                            const primarySorted = testdataGlobal.Sorting_Objects(postInfo.body || {});
-                            const secondarySorted = testdataGlobal.Sorting_Objects(secondaryInfo.body || {});
-                            const differencesObject = testdataGlobal.JSON_Differences(primarySorted, secondarySorted);
+                            if (dataset.expectedStatus === 200) {
+                                // Sort both bodies and diff them field by field
+                                const primarySorted = testdataGlobal.Sorting_Objects(postInfo.body || {});
+                                const secondarySorted = testdataGlobal.Sorting_Objects(secondaryInfo.body || {});
+                                const differencesObject = testdataGlobal.JSON_Differences(primarySorted, secondarySorted);
 
-                            addContext(this, {
-                                title: 'Comparison Difference',
-                                value: testdataGlobal.Differences_Table(differencesObject)
-                            });
+                                addContext(this, {
+                                    title: 'Comparison Difference',
+                                    value: testdataGlobal.Differences_Table(differencesObject)
+                                });
 
-                            expect(JSON.stringify(differencesObject)).to.be.equal('null');
+                                expect(JSON.stringify(differencesObject)).to.be.equal('null');
+                            }
 
                             done();
                         } catch (err) {

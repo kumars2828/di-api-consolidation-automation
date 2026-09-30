@@ -6,9 +6,15 @@ export default {
         }
 
         const query = new URLSearchParams();
-        query.append('type', dataset.FilterType);
-        query.append('q', dataset.Filter);
-        query.append('languageCode', dataset.LanguageCode);
+        if (dataset.FilterType !== undefined && dataset.FilterType !== null) {
+            query.append('type', dataset.FilterType);
+        }
+        if (dataset.Filter !== undefined && dataset.Filter !== null) {
+            query.append('q', dataset.Filter);
+        }
+        if (dataset.LanguageCode !== undefined && dataset.LanguageCode !== null) {
+            query.append('languageCode', dataset.LanguageCode);
+        }
 
         if (dataset.VendorId !== undefined && dataset.VendorId !== null && dataset.VendorId !== '') {
             query.append('vendorId', dataset.VendorId);
@@ -25,20 +31,31 @@ export default {
 
     // Builds the DetailProduct GET query string from the mapped POST payload
     DetailProduct_GetPath: function buildDetailProductGetPath(mappedDataPost) {
-        if (!mappedDataPost || !mappedDataPost.ProductId) {
-            throw new Error('mappedDataPost with ProductId is required to build DetailProduct GET path');
+        if (!mappedDataPost) {
+            throw new Error('mappedDataPost is required to build DetailProduct GET path');
         }
 
-        const query = new URLSearchParams({
-            returnBeersInfo: String(mappedDataPost.ReturnBeersInfo),
-            returnIngredientStrengthRouteForm: String(mappedDataPost.ReturnIngredientStrengthRouteForm),
-            returnProductModifier: String(mappedDataPost.ReturnProductModifier),
-            returnRxNormSynonyms: String(mappedDataPost.ReturnRxNormSynonyms),
-            id: mappedDataPost.ProductId.Id,
-            type: mappedDataPost.ProductId.IdType
-        }).toString();
+        const query = new URLSearchParams();
+        const optionalParameters = {
+            returnBeersInfo: mappedDataPost.ReturnBeersInfo,
+            returnIngredientStrengthRouteForm: mappedDataPost.ReturnIngredientStrengthRouteForm,
+            returnProductModifier: mappedDataPost.ReturnProductModifier,
+            returnRxNormSynonyms: mappedDataPost.ReturnRxNormSynonyms
+        };
 
-        return `/knowledge/product/detail?${query}`;
+        for (const [name, value] of Object.entries(optionalParameters)) {
+            if (value !== undefined) {
+                query.append(name, String(value));
+            }
+        }
+
+        if (mappedDataPost.ProductId) {
+            query.append('id', mappedDataPost.ProductId.Id ?? '');
+            query.append('type', mappedDataPost.ProductId.IdType ?? '');
+        }
+
+        const queryString = query.toString();
+        return `/knowledge/product/detail${queryString ? `?${queryString}` : ''}`;
     },
 
     // Static GET path for ListCoatings (no query parameters)
