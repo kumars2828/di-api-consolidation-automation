@@ -17,10 +17,14 @@
     "ListDocumentationTypesPostPost": "cross-env LIST_DOCUMENTATION_TYPES_RUN_MODE=POST_POST mocha ./test/list/list_documentation_types.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "ListTherapeuticConceptByProductPostGet": "cross-env LIST_THERAPEUTIC_CONCEPT_BY_PRODUCT_RUN_MODE=POST_GET mocha ./test/list/list_therapeutic_concept_by_prodct.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "ListTherapeuticConceptByProductPostPost": "cross-env LIST_THERAPEUTIC_CONCEPT_BY_PRODUCT_RUN_MODE=POST_POST mocha ./test/list/list_therapeutic_concept_by_prodct.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
+    "ListAllergySubstanceClassesPostGet": "cross-env LIST_ALLERGY_SUBSTANCE_CLASSES_RUN_MODE=POST_GET mocha ./test/list/list_allergy_substance_classes.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
+    "ListAllergySubstanceClassesPostPost": "cross-env LIST_ALLERGY_SUBSTANCE_CLASSES_RUN_MODE=POST_POST mocha ./test/list/list_allergy_substance_classes.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "DetailProductPostGet": "cross-env DETAIL_PRODUCT_RUN_MODE=POST_GET mocha ./test/detail_dose/detail_product.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "DetailProductPostPost": "cross-env DETAIL_PRODUCT_RUN_MODE=POST_POST mocha ./test/detail_dose/detail_product.js --reporter mocha-multi-reporters --reporter-options configFile=report-config.json",
     "RunAllPostGet": "node ./utilities/run-mode-batch.js POST_GET",
-    "RunAllPostPost": "node ./utilities/run-mode-batch.js POST_POST"
+    "RunAllPostPost": "node ./utilities/run-mode-batch.js POST_POST",
+    "RunAllPostGetParallel": "node ./utilities/run-mode-batch.js POST_GET --parallel",
+    "RunAllPostPostParallel": "node ./utilities/run-mode-batch.js POST_POST --parallel"
   },
   "keywords": [],
   "author": "",
@@ -36,7 +40,9 @@
     "cross-env": "^10.1.0",
     "dotenv": "^17.1.0",
     "mocha": "^10.0.0",
-    "mochawesome": "^7.1.3"
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^5.1.1",
+    "mochawesome-report-generator": "^6.3.2"
   },
   "dependencies": {
     "add": "^2.0.6",

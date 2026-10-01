@@ -2,77 +2,85 @@ export default {
 
     // Reports - DetailProduct Data Objects 
     DetailProduct_dataObjects: {
-        dataset_1: {
+        valid_product_id_dataset_1: {
             ProductId: {
-                ProductId: ["6750"]
+                ProductId: ["7"]
             },
             returnBeersInfo: true,
             returnIngredientStrengthRouteForm: true,
             returnRxNormSynonyms: true,
-            returnProductModifier: true
+            returnProductModifier: true,
+            expectedStatus: 200
         },
-        dataset_2: {
+        valid_ndc9_dataset_2: {
             ProductId: {
-                ProductId: ["6751"]
+                NDC9: ["00044-0090"]
             },
-            returnBeersInfo: true,
-            returnIngredientStrengthRouteForm: true,
-            returnRxNormSynonyms: true,
-            returnProductModifier: true
+            returnBeersInfo: false,
+            returnIngredientStrengthRouteForm: false,
+            returnRxNormSynonyms: false,
+            returnProductModifier: false,
+            expectedStatus: 200
         },
-        dataset_3: {
+        optional_fields_omitted_dataset_3: {
             ProductId: {
-                ProductId: ["6752"]
+                ProductId: ["7"]
             },
-            returnBeersInfo: true,
-            returnIngredientStrengthRouteForm: true,
-            returnRxNormSynonyms: true,
-            returnProductModifier: true
+            expectedStatus: 200
         },
-        dataset_4: {
-            ProductId: {
-                ProductId: ["6754"]
-            },
+        missing_product_id_dataset_4: {
+            ProductId: null,
             returnBeersInfo: true,
             returnIngredientStrengthRouteForm: true,
             returnRxNormSynonyms: true,
-            returnProductModifier: true
+            returnProductModifier: false,
+            expectedStatus: 400
         },
-        dataset_5: {
+        invalid_ndc9_dataset_5: {
             ProductId: {
-                NDC9: ["17478-0402"]
+                NDC9: ["abcdefchi"]
             },
             returnBeersInfo: true,
             returnIngredientStrengthRouteForm: true,
             returnRxNormSynonyms: true,
-            returnProductModifier: true
+            returnProductModifier: false,
+            expectedStatus: 400
         },
-        dataset_6: {
+        product_not_found_dataset_6: {
             ProductId: {
-                NDC9: ["66267-0945"]
+                ProductId: ["128976789"]
             },
             returnBeersInfo: true,
             returnIngredientStrengthRouteForm: true,
             returnRxNormSynonyms: true,
-            returnProductModifier: true
+            returnProductModifier: true,
+            expectedStatus: 404
         },
-        dataset_7: {
+        empty_ndc9_dataset_7: {
             ProductId: {
-                NDC9: ["66267-0196"]
+                NDC9: [""]
             },
-            returnBeersInfo: true,
-            returnIngredientStrengthRouteForm: true,
-            returnRxNormSynonyms: true,
-            returnProductModifier: true
+            returnBeersInfo: false,
+            returnIngredientStrengthRouteForm: false,
+            returnRxNormSynonyms: false,
+            returnProductModifier: false,
+            expectedStatus: 400
         },
-        dataset_8: {
+        invalid_access_token_dataset_8: {
             ProductId: {
-                NDC9: ["66267-0941"]
+                ProductId: ["7"]
             },
             returnBeersInfo: true,
             returnIngredientStrengthRouteForm: true,
             returnRxNormSynonyms: true,
-            returnProductModifier: true
+            returnProductModifier: true,
+            tokenType: "invalid",
+            postOnly: true,
+            expectedStatus: 400,
+            expectedError: {
+                Type: "Authentication Error",
+                Text: "AccessToken is invalid or expired"
+            }
         }
     },
 

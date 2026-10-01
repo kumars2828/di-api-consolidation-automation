@@ -12,6 +12,7 @@ Your job is to implement both POST-vs-GET and POST-vs-POST comparison modes for 
 
 ## Three-URL Intake (preferred for a new method)
 - Accept the target test file path (or the user's active test file) and three complete URLs labelled `cert`, `consolidate`, and `get`. The URLs supply independent base hosts and paths; the user need not provide a JSON spec, mapping name, dataset name, or query builder name.
+- Treat three supplied URLs as an unambiguous request for `runMode=BOTH`. The legacy agent name, phrases such as "run post-get-compare-agent", or emphasis on the GET URL must not reduce the scope to `POST_GET`. Implement only one mode when the user explicitly says `runMode=POST_GET`, `runMode=POST_POST`, or "only" that mode.
 - Inspect the target file for its exported dataset reference and existing mapping function, then inspect those definitions. Derive the method name from the test/mapper; retain the file's method-specific `describe`, test names, fixtures, and POST payload shape. Do not copy another method's identifiers or report labels.
 - Parse the supplied URLs with `URL`: use each origin for the appropriate base helper/environment and each pathname for that mode's request. Keep query parameters in the GET path builder, using dataset or mapped POST fields only when their correspondence is documented. Never drop a query parameter or infer a missing mapping silently.
 - Reuse existing URL helpers when they resolve to the supplied host. If they do not, introduce a scoped environment/helper without changing other APIs' endpoints. Confirm token environment and authentication method for each POST host rather than assuming the GET host uses the POST token.
@@ -23,6 +24,7 @@ Your job is to implement both POST-vs-GET and POST-vs-POST comparison modes for 
 - Prefer the three-URL intake above for a single existing method. The target file may be the active editor file; require its path only when there is no unambiguous active test file.
 - Also accept a structured JSON-like `spec` when the user supplies one. For new single-method conversions it must identify the three endpoints (via `primary`, `secondaryGet`, `secondaryPost`); discover `method`, `mapping`, and datasets from the target file when omitted.
 - `scope` defaults to `SINGLE`. `runMode` defaults to `BOTH` for a new method; `scope=ALL_METHODS` requires a `runMode` but no method, test, or mapping input.
+- When `cert`, `consolidate`, and `get` are all present and `runMode` is omitted, create both `<MethodName>PostGet` and `<MethodName>PostPost`; never infer a single mode from the customization's filename or display name.
 - `runMode` values:
 	- `POST_GET`: compare primary POST call vs secondary GET call.
 	- `POST_POST`: compare primary POST call vs secondary POST call.
