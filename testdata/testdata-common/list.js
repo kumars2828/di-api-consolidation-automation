@@ -784,187 +784,108 @@ export default {
                 NDC9: ["00085-0620"]
             },
         },
+
         dataset_3: {
-            PackageOrProductFilter: {
-                NDC9: ["00009-5181"]
-            },
-        },
-        dataset_4: {
-            PackageOrProductFilter: {
-                PackageId: ["2061"]
-            },
-        },
-        dataset_5: {
-            PackageOrProductFilter: {
-                PackageId: ["2062"]
-            },
-        },
-        dataset_6: {
             PackageOrProductFilter: {
                 PackageId: ["2064"]
             },
         },
-        dataset_7: {
+        dataset_4: {
             PackageOrProductFilter: {
                 PackageId: ["2070"]
             },
         },
-        dataset_8: {
+        dataset_5: {
             PackageOrProductFilter: {
                 NDC10: ["0603-2115-32"]
             },
         },
-        dataset_9: {
+        dataset_6: {
             PackageOrProductFilter: {
                 NDC10: ["0603-2116-28"]
             },
         },
-        dataset_10: {
-            PackageOrProductFilter: {
-                NDC10: ["0603-2116-32"]
-            },
-        },
-        dataset_11: {
-            PackageOrProductFilter: {
-                NDC10: ["0603-2116-21"]
-            },
-        },
-        dataset_12: {
-            PackageOrProductFilter: {
-                NDC11: ["68094-0193-62"]
-            },
-        },
-        dataset_13: {
-            PackageOrProductFilter: {
-                NDC11: ["52041-0007-26"]
-            },
-        },
-        dataset_14: {
+
+        dataset_7: {
             PackageOrProductFilter: {
                 NDC11: ["00378-6173-01"]
             },
         },
-        dataset_15: {
+        dataset_8: {
             PackageOrProductFilter: {
                 NDC11: ["00378-6174-01"]
             },
         },
-        dataset_16: {
+        dataset_9: {
             PackageOrProductFilter: {
                 UPCB: ["96295-11194"]
             },
         },
-        dataset_17: {
+        dataset_10: {
             PackageOrProductFilter: {
                 UPCB: ["96295-11195"]
             },
         },
-        dataset_18: {
-            PackageOrProductFilter: {
-                UPCB: ["96295-11196"]
-            },
-        },
-        dataset_19: {
-            PackageOrProductFilter: {
-                UPCB: ["96295-11223"]
-            },
-        },
-        dataset_20: {
+
+        dataset_11: {
             PackageOrProductFilter: {
                 GTIN12: ["310019662039"]
             },
         },
-        dataset_21: {
+        dataset_12: {
             PackageOrProductFilter: {
                 GTIN12: ["310019075877"]
             },
         },
-        dataset_22: {
-            PackageOrProductFilter: {
-                GTIN12: ["351672520236"]
-            },
-        },
-        dataset_23: {
-            PackageOrProductFilter: {
-                GTIN12: ["351672520434"]
-            },
-        },
-        dataset_24: {
+
+        dataset_13: {
             PackageOrProductFilter: {
                 GTIN14: ["00300780385664"]
             },
         },
-        dataset_25: {
+        dataset_14: {
             PackageOrProductFilter: {
                 GTIN14: ["00300780386661"]
             },
         },
-        dataset_26: {
-            PackageOrProductFilter: {
-                GTIN14: ["00351672406219"]
-            },
-        },
-        dataset_27: {
-            PackageOrProductFilter: {
-                GTIN14: ["00351672406318"]
-            },
-        },
-        dataset_28: {
+
+        dataset_15: {
             PackageOrProductFilter: {
                 ProductId: ["57866"]
             },
         },
-        dataset_29: {
+        dataset_16: {
             PackageOrProductFilter: {
                 ProductId: ["17029"]
             },
         },
-        dataset_30: {
+        dataset_17: {
             PackageOrProductFilter: {
                 ProductId: ["7284"]
             },
         },
-        dataset_31: {
+        dataset_18: {
             PackageOrProductFilter: {
                 ProductId: ["7285"]
             },
         },
-        dataset_32: {
+        dataset_19: {
             PackageOrProductFilter: {
                 NHRIC: ["8287-126029"]
             },
         },
-        dataset_33: {
+        dataset_20: {
             PackageOrProductFilter: {
                 NHRIC: ["8287-126016"]
             },
         },
-        dataset_34: {
-            PackageOrProductFilter: {
-                NHRIC: ["8222-072597"]
-            },
-        },
-        dataset_35: {
-            PackageOrProductFilter: {
-                NHRIC: ["8222-074393"]
-            },
-        },
-        dataset_36: {
+
+        dataset_21: {
             PackageOrProductFilter: {
                 PIN: ["50580010904"]
             },
         },
-        dataset_37: {
-            PackageOrProductFilter: {
-                PIN: ["50580021136"]
-            },
-        },
-        dataset_38: {
-            PackageOrProductFilter: {
-                PIN: ["50580010904"]
-            },
-        },
-        dataset_39: {
+        dataset_22: {
             PackageOrProductFilter: {
                 PIN: ["50580092218"]
             },
