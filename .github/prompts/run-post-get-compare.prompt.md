@@ -18,6 +18,7 @@ Requirements:
 - If `scope=ALL_METHODS`, do not edit test files; return run summary and failed scripts.
 - For a new API with three supplied URLs, use the active test file or `test=...`; read its dataset reference and mapper and derive the method from that file. Do not require the user to restate the mapper or a full JSON spec. Parse each URL into its own host and path; ask only for missing or ambiguous details.
 - For a new `scope=SINGLE` method, default to implementing both `POST_GET` and `POST_POST`. The three provided URLs supply primary, secondary GET and secondary POST endpoints; each run still selects only one mode.
+- Three supplied `cert`, `consolidate`, and `get` URLs always mean `runMode=BOTH` unless the user explicitly requests only one mode. Do not infer POST_GET-only behavior from this prompt's legacy filename or invocation wording.
 - Define `environment_1`, `environment_2`, `runMode`, `isPostGetMode`, and `isPostPostMode`; fetch a separate secondary token only in `POST_POST`, and use it for the secondary POST payload.
 - Check each required token is non-empty in `before`; never print a token to the console. Show the real mapped AccessToken in both POST request contexts; redact it from response and difference contexts. Warn that local HTML/JSON reports will contain secrets.
 - Reuse existing mapping function from the target test.

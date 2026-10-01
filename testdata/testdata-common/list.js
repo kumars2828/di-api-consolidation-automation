@@ -1017,25 +1017,51 @@ export default {
     // Reports - ListAllergySubstanceClasses Data Objects 
     ListAllergySubstanceClasses_dataObjects: {
 
-        dataset_1: {
+        valid_amino_filter_dataset_1: {
             NameFilter: "%amino%",
-            MaxResults: "100"
+            MaxResults: "100",
+            expectedStatus: 200
         },
-        dataset_2: {
+        valid_acetyl_filter_dataset_2: {
             NameFilter: "%acetyl%",
-            MaxResults: "50"
+            MaxResults: "50",
+            expectedStatus: 200
         },
-        dataset_3: {
+        valid_penicillin_filter_dataset_3: {
             NameFilter: "%peni%",
-            MaxResults: "25"
+            MaxResults: "25",
+            expectedStatus: 200
         },
-        dataset_4: {
+        valid_alpha_filter_dataset_4: {
             NameFilter: "%alpha%",
-            MaxResults: "40"
+            MaxResults: "40",
+            expectedStatus: 200
         },
-        dataset_5: {
-            NameFilter: "%vaccine%",
-            MaxResults: "40"
+        invalid_name_filter_type_dataset_5: {
+            NameFilter: 123456,
+            MaxResults: "20",
+            expectedStatus: 400
+        },
+        allergy_class_not_found_dataset_6: {
+            NameFilter: "%jbcjbjc%",
+            MaxResults: "30",
+            expectedStatus: 404
+        },
+        empty_name_filter_dataset_7: {
+            NameFilter: "",
+            MaxResults: "20",
+            expectedStatus: 400
+        },
+        invalid_access_token_dataset_8: {
+            NameFilter: "%acetyl%",
+            MaxResults: "30",
+            tokenType: "invalid",
+            postOnly: true,
+            expectedStatus: 400,
+            expectedError: {
+                Type: "Authentication Error",
+                Text: "AccessToken is invalid or expired"
+            }
         },
 
     },
@@ -4648,7 +4674,7 @@ ListUnits_dataObjects: {
 // Reports - ListWarningLabels Data Objects 
 ListWarningLabels_dataObjects: {
 
-    valid_warning_label_id: {
+    valid_warning_label_id_dataset_1: {
         FilterType: "WarningLabelId",
         Filter: "1369",
         LanguageCode: "es",
@@ -4656,21 +4682,21 @@ ListWarningLabels_dataObjects: {
         MaxResults: "15",
         expectedStatus: 200
     },
-    valid_warning_label_text_french: {
+    valid_warning_label_text_french_dataset_2: {
         FilterType: "WarningLabelText",
         Filter: "%para%",
         LanguageCode: "fr",
         MaxResults: "20",
         expectedStatus: 200
     },
-    valid_warning_label_id_without_vendor: {
+    valid_warning_label_id_without_vendor_dataset_3: {
         FilterType: "WarningLabelId",
         Filter: "10",
         LanguageCode: "es",
         MaxResults: "20",
         expectedStatus: 200
     },
-    valid_warning_label_text_spanish: {
+    valid_warning_label_text_spanish_dataset_4: {
         FilterType: "WarningLabelText",
         Filter: "%tomar%",
         LanguageCode: "es",
@@ -4678,26 +4704,26 @@ ListWarningLabels_dataObjects: {
         MaxResults: "30",
         expectedStatus: 200
     },
-    max_results_omitted: {
+    max_results_omitted_dataset_5: {
         FilterType: "WarningLabelId",
         Filter: "1369",
         LanguageCode: "es",
         expectedStatus: 200
     },
-    missing_language_code: {
+    missing_language_code_dataset_6: {
         FilterType: "WarningLabelText",
         Filter: "%para%",
         MaxResults: "20",
         expectedStatus: 400
     },
-    invalid_filter_value: {
+    invalid_filter_value_dataset_7: {
         FilterType: "WarningLabelText",
         Filter: "10",
         LanguageCode: "es",
         MaxResults: "20",
         expectedStatus: 400
     },
-    max_results_out_of_range: {
+    max_results_out_of_range_dataset_8: {
         FilterType: "WarningLabelText",
         Filter: "%tomar%",
         LanguageCode: "es",
@@ -4705,14 +4731,14 @@ ListWarningLabels_dataObjects: {
         MaxResults: "20000000000",
         expectedStatus: 400
     },
-    empty_filter: {
+    empty_filter_dataset_9: {
         FilterType: "WarningLabelText",
         Filter: "",
         LanguageCode: "fr",
         MaxResults: "20",
         expectedStatus: 400
     },
-    invalid_access_token: {
+    invalid_access_token_dataset_10: {
         FilterType: "WarningLabelText",
         Filter: "%para%",
         LanguageCode: "fr",
