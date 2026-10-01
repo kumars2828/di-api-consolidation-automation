@@ -87,5 +87,22 @@ export default {
     // Static GET path for ListDocumentationTypes (no query parameters)
     ListDocumentationTypes_GetPath: function buildListDocumentationTypesGetPath() {
         return '/knowledge/list/documentation-type';
+    },
+
+    // Builds the ListAllergySubstanceClasses GET query from its name filter and result limit
+    ListAllergySubstanceClasses_GetPath: function buildListAllergySubstanceClassesGetPath(dataset) {
+        if (!dataset) {
+            throw new Error('dataset is required to build ListAllergySubstanceClasses GET path');
+        }
+
+        const query = new URLSearchParams();
+        if (dataset.NameFilter !== undefined && dataset.NameFilter !== null) {
+            query.append('q', dataset.NameFilter);
+        }
+        if (dataset.MaxResults !== undefined && dataset.MaxResults !== null && dataset.MaxResults !== '') {
+            query.append('size', dataset.MaxResults);
+        }
+
+        return `/knowledge/search/allergy-substance-class?${query.toString()}`;
     }
 };
