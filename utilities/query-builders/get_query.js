@@ -63,6 +63,26 @@ export default {
         return '/knowledge/list/coating';
     },
 
+    ListColors_GetPath: function buildListColorsGetPath() {
+        return '/knowledge/list/color';
+    },
+
+    ListLegendStatuses_GetPath: function buildListLegendStatusesGetPath() {
+        return '/knowledge/federal-state/federal-legend-status';
+    },
+
+    ListDESIStatuses_GetPath: function buildListDESIStatusesGetPath() {
+        return '/knowledge/list/desi-status';
+    },
+
+    ListBrandGenericStatuses_GetPath: function buildListBrandGenericStatusesGetPath() {
+        return '/knowledge/list/brand-generic-status';
+    },
+
+    ListIVContainerMaterials_GetPath: function buildListIVContainerMaterialsGetPath() {
+        return '/knowledge/federal-state/iv-container-material';
+    },
+
     ListAGSBeersQualityOfEvidence_GetPath: function buildListAGSBeersQualityOfEvidenceGetPath() {
         return '/knowledge/beers/quality-of-evidence';
     },
