@@ -3516,20 +3516,22 @@ export default {
 
         // Iterate over each option in the input parameter
         for (const [datasetName, dataset] of Object.entries(dataObjects)) {
-            // Map DrugIds
-            const PackageOrProductFilter = {};
-            for (const [idType, ids] of Object.entries(dataset.PackageOrProductFilter)) {
-                if (ids.length > 0) {
-                    PackageOrProductFilter.IdType = idType;
-                    PackageOrProductFilter.Id = ids[0];  // Only taking the first ID for now
-                }
-            }
-            // Base JSON structure - Includes Drug Identifier
             const jsonOutput = {
-                PackageOrProductFilter: PackageOrProductFilter,
-                MaxResults: dataset.MaxResults,
                 AccessToken: Token, // Placeholder
             };
+            if (dataset.MaxResults !== undefined) {
+                jsonOutput.MaxResults = dataset.MaxResults;
+            }
+            if (dataset.PackageOrProductFilter !== undefined) {
+                const PackageOrProductFilter = {};
+                if (dataset.PackageOrProductFilter.IdType !== undefined) {
+                    PackageOrProductFilter.IdType = dataset.PackageOrProductFilter.IdType;
+                }
+                if (dataset.PackageOrProductFilter.Id !== undefined) {
+                    PackageOrProductFilter.Id = dataset.PackageOrProductFilter.Id;
+                }
+                jsonOutput.PackageOrProductFilter = PackageOrProductFilter;
+            }
 
             // Store the mapped JSON under the dataset name
             mappedResults[datasetName] = jsonOutput;
@@ -4642,16 +4644,18 @@ export default {
             // Map DrugIds
             const ProductId = {};
             for (const [idType, ids] of Object.entries(dataset.ProductId)) {
-                if (ids.length > 0) {
+                if (idType) {
                     ProductId.IdType = idType;
+                }
+                if (ids.length > 0) {
                     ProductId.Id = ids[0];  // Only taking the first ID for now
                 }
             }
             // Base JSON structure - Includes Drug Identifier
             const jsonOutput = {
                 ProductId: ProductId,
-                ReturnRxNormSynonyms: dataset.ReturnRxNormSynonyms,
-                MaxResults: dataset.MaxResults,
+                ...(dataset.ReturnRxNormSynonyms !== undefined && { ReturnRxNormSynonyms: dataset.ReturnRxNormSynonyms }),
+                ...(dataset.MaxResults !== undefined && { MaxResults: dataset.MaxResults }),
                 AccessToken: Token, // Placeholder
             };
 
@@ -4977,16 +4981,22 @@ export default {
         for (const [datasetName, dataset] of Object.entries(dataObjects)) {
             // Map DrugIds
             const ProductId = {};
-            for (const [idType, ids] of Object.entries(dataset.ProductId)) {
-                if (ids.length > 0) {
-                    ProductId.IdType = idType;
-                    ProductId.Id = ids[0];  // Only taking the first ID for now
+            if ('IdType' in dataset.ProductId || 'Id' in dataset.ProductId) {
+                // Explicit form keeps a missing IdType or Id omitted
+                if (dataset.ProductId.IdType !== undefined) ProductId.IdType = dataset.ProductId.IdType;
+                if (dataset.ProductId.Id !== undefined) ProductId.Id = dataset.ProductId.Id;
+            } else {
+                for (const [idType, ids] of Object.entries(dataset.ProductId)) {
+                    if (ids.length > 0) {
+                        ProductId.IdType = idType;
+                        ProductId.Id = ids[0];  // Only taking the first ID for now
+                    }
                 }
             }
             // Base JSON structure - Includes Drug Identifier
             const jsonOutput = {
                 ProductId: ProductId,
-                StateId: dataset.StateId,
+                ...(dataset.StateId !== undefined && { StateId: dataset.StateId }),
                 AccessToken: Token, // Placeholder
             };
 

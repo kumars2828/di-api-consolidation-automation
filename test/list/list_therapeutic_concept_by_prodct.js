@@ -47,9 +47,11 @@ describe('list_therapeutic_concept_by_prodct ', function () {
             it(`${datasetName} - Generate all list in ListTherapeuticConceptByProduct [critical]`, function (done) {
 
                 // Map each POST payload with its own environment's token.
-                const mappedData_Post = testdataGlobal.Mapping_Json22({ [datasetName]: dataset }, access_token.cert_containerized_token);
+                const token = dataset.tokenType === 'invalid' ? 'ten' : access_token.cert_containerized_token;
+                const consolidateToken = dataset.tokenType === 'invalid' ? 'ten' : secondaryToken;
+                const mappedData_Post = testdataGlobal.Mapping_Json22({ [datasetName]: dataset }, token);
                 const mappedData_Post_Consolidate = isPostPostMode
-                    ? testdataGlobal.Mapping_Json22({ [datasetName]: dataset }, secondaryToken)
+                    ? testdataGlobal.Mapping_Json22({ [datasetName]: dataset }, consolidateToken)
                     : null;
                 if (!mappedData_Post || (isPostPostMode && !mappedData_Post_Consolidate)) {
                     done(new Error(`Mapping for dataset ${datasetName} failed: dataset is null or undefined`));
@@ -62,14 +64,17 @@ describe('list_therapeutic_concept_by_prodct ', function () {
                 const postBaseUrl = testdataGlobal.Endpoint_Url_cert(postEnv);
                 const getBaseUrl = testdataGlobal.Endpoint_Url_staging_knowledge(getEnv);
                 const consolidatePostBaseUrl = testdataGlobal.Endpoint_Url_consolidate(environment_2);
-                const getPath = get_query.ListTherapeuticConceptByProduct_GetPath(dataset);
+                const runSecondary = isPostPostMode || !dataset.postOnly;
+                const getPath = isPostGetMode && runSecondary
+                    ? get_query.ListTherapeuticConceptByProduct_GetPath(dataset)
+                    : null;
 
                 // Create only the requests needed by the selected comparison mode.
                 const postRequest = chai.request(postBaseUrl)
                     .post('/api/ListTherapeuticConceptByProduct')
                     .set('Content-Type', 'application/json')
                     .send(mappedData_Post);
-                const secondaryRequest = isPostGetMode
+                const secondaryRequest = !runSecondary ? null : isPostGetMode
                     ? chai.request(getBaseUrl).get(getPath).set('Content-Type', 'application/json')
                     : chai.request(consolidatePostBaseUrl)
                         .post('/api/ListTherapeuticConceptByProduct')
@@ -99,7 +104,7 @@ describe('list_therapeutic_concept_by_prodct ', function () {
                         Body: mappedData_Post
                     }
                 });
-                addContext(this, isPostGetMode ? {
+                if (runSecondary) addContext(this, isPostGetMode ? {
                     title: 'Request URL for Secondary Call',
                     value: {
                         URL: getBaseUrl + getPath,
@@ -140,11 +145,13 @@ describe('list_therapeutic_concept_by_prodct ', function () {
                             body: response ? parseResponseData(response) : { message: result.reason?.message || 'Request failed' }
                         };
                     };
-                    const [postResult, secondaryResult] = await Promise.allSettled([postRequest, secondaryRequest]);
+                    const [postResult, secondaryResult] = await Promise.allSettled(
+                        secondaryRequest ? [postRequest, secondaryRequest] : [postRequest]
+                    );
                     const postInfo = normalizeResult(postResult);
-                    const secondaryInfo = normalizeResult(secondaryResult);
+                    const secondaryInfo = secondaryResult ? normalizeResult(secondaryResult) : null;
 
-                    addContext(this, {
+                    if (secondaryInfo) addContext(this, {
                         title: 'Primary Response Details',
                         value: {
                             URL: postBaseUrl + '/api/ListTherapeuticConceptByProduct',
@@ -163,20 +170,35 @@ describe('list_therapeutic_concept_by_prodct ', function () {
                         }
                     });
 
-                    // Sort and compare both payloads before asserting either status or equality.
-                    const postSorted = testdataGlobal.Sorting_Objects(postInfo.body);
-                    const secondarySorted = testdataGlobal.Sorting_Objects(secondaryInfo.body);
-                    const differencesObject = testdataGlobal.JSON_Differences(postSorted, secondarySorted);
-                    addContext(this, {
-                        title: 'Comparison Difference',
-                        value: testdataGlobal.Differences_Table(redactToken(differencesObject))
-                    });
-
-                    expect(postInfo.statusCode, `POST ${postBaseUrl}/api/ListTherapeuticConceptByProduct`).to.equal(200);
-                    expect(secondaryInfo.statusCode, isPostGetMode
+                    const expectedPostStatus = dataset.expectedPostStatus ?? dataset.expectedStatus;
+                    const expectedSecondaryStatus = isPostGetMode
+                        ? dataset.expectedGetStatus ?? dataset.expectedStatus
+                        : dataset.expectedConsolidateStatus ?? dataset.expectedStatus;
+                    const failures = [];
+                    const check = (assertion) => {
+                        try { assertion(); } catch (error) { failures.push(error.message); }
+                    };
+                    check(() => expect(postInfo.statusCode, `POST ${postBaseUrl}/api/ListTherapeuticConceptByProduct`).to.equal(expectedPostStatus));
+                    if (secondaryInfo) check(() => expect(secondaryInfo.statusCode, isPostGetMode
                         ? `GET ${getBaseUrl}${getPath}`
-                        : `POST ${consolidatePostBaseUrl}/api/ListTherapeuticConceptByProduct`).to.equal(200);
-                    expect(differencesObject).to.be.null;
+                        : `POST ${consolidatePostBaseUrl}/api/ListTherapeuticConceptByProduct`).to.equal(expectedSecondaryStatus));
+                    if (dataset.expectedError) {
+                        check(() => expect(postInfo.body).to.deep.include(dataset.expectedError));
+                        if (secondaryInfo) check(() => expect(secondaryInfo.body).to.deep.include(dataset.expectedError));
+                    }
+
+                    if (secondaryInfo && expectedPostStatus === 200 && expectedSecondaryStatus === 200
+                        && postInfo.statusCode === 200 && secondaryInfo.statusCode === 200) {
+                        const postSorted = testdataGlobal.Sorting_Objects(postInfo.body);
+                        const secondarySorted = testdataGlobal.Sorting_Objects(secondaryInfo.body);
+                        const differencesObject = testdataGlobal.JSON_Differences(postSorted, secondarySorted);
+                        addContext(this, {
+                            title: 'Comparison Difference',
+                            value: testdataGlobal.Differences_Table(redactToken(differencesObject))
+                        });
+                        check(() => expect(differencesObject).to.be.null);
+                    }
+                    if (failures.length) throw new Error(failures.join('; '));
                 })().then(() => done(), (error) => done(new Error(`Failed to compare the responses - ${error}`)));
             }).timeout(120000);
         });
