@@ -96,12 +96,11 @@ export default {
         const productOrPackageFilter = dataset?.PackageOrProductFilter;
         const [type, identifiers] = Object.entries(productOrPackageFilter || {})[0] || [];
         const id = Array.isArray(identifiers) ? identifiers[0] : identifiers;
-        if (!type || id === undefined || id === null || id === '') {
-            throw new Error('dataset with a PackageOrProductFilter identifier is required to build ListTherapeuticConceptByProduct GET path');
-        }
-
-        const query = new URLSearchParams({ id: String(id), type });
-        return `/knowledge/product/therapeutic-concept?${query.toString()}`;
+        const query = new URLSearchParams();
+        if (id !== undefined && id !== null) query.set('id', String(id));
+        if (type !== undefined && type !== null) query.set('type', type);
+        const queryString = query.toString();
+        return `/knowledge/product/therapeutic-concept${queryString ? `?${queryString}` : ''}`;
     },
 
     // Static GET path for ListDocumentationTypes (no query parameters)
@@ -124,5 +123,38 @@ export default {
         }
 
         return `/knowledge/search/allergy-substance-class?${query.toString()}`;
+    },
+
+    // Builds the ListFederal GET query from the dataset's PackageOrProductFilter (Id -> id, IdType -> type)
+    ListFederal_GetPath: function buildListFederalGetPath(dataset) {
+        const filter = dataset?.PackageOrProductFilter || {};
+        const query = new URLSearchParams();
+        if (filter.Id !== undefined && filter.Id !== null) query.append('id', String(filter.Id));
+        if (filter.IdType !== undefined && filter.IdType !== null) query.append('type', filter.IdType);
+        const queryString = query.toString();
+        return `/knowledge/federal-state/federal-drug-info${queryString ? `?${queryString}` : ''}`;
+    },
+
+    // Builds the ListStateDEAClassification GET query from the mapped state and product identifier.
+    ListStateDEAClassification_GetPath: function buildListStateDEAClassificationGetPath(mappedDataPost) {
+        if (!mappedDataPost) {
+            throw new Error('mappedDataPost is required to build ListStateDEAClassification GET path');
+        }
+        const query = new URLSearchParams();
+        if (mappedDataPost.StateId !== undefined) query.append('stateId', mappedDataPost.StateId);
+        if (mappedDataPost.ProductId?.Id !== undefined) query.append('id', String(mappedDataPost.ProductId.Id));
+        if (mappedDataPost.ProductId?.IdType !== undefined) query.append('type', mappedDataPost.ProductId.IdType);
+        return `/knowledge/federal-state/state-dea-class?${query.toString()}`;
+    },
+
+    // Builds the RxNorm GET query from the mapped product identifier and synonym flag.
+    ListRxNormByProduct_GetPath: function buildListRxNormByProductGetPath(mappedDataPost) {
+        const query = new URLSearchParams();
+        if (mappedDataPost.ReturnRxNormSynonyms !== undefined) {
+            query.append('returnRxNormSynonyms', String(mappedDataPost.ReturnRxNormSynonyms));
+        }
+        if (mappedDataPost.ProductId?.Id !== undefined) query.append('id', String(mappedDataPost.ProductId.Id));
+        if (mappedDataPost.ProductId?.IdType !== undefined) query.append('type', mappedDataPost.ProductId.IdType);
+        return `/knowledge/product/rxnorm?${query.toString()}`;
     }
 };

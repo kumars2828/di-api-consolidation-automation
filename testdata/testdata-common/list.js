@@ -70,201 +70,31 @@ export default {
     // Reports - ListTherapeuticConceptByProdct Data Objects 
     ListTherapeuticConceptByProdct_dataObjects: {
 
-        dataset_1: {
-            PackageOrProductFilter: {
-                NDC9: ["00002-7394"]
-            }
-        },
-        dataset_2: {
-            PackageOrProductFilter: {
-                NDC9: ["00085-0620"]
-            }
-        },
-        dataset_3: {
-            PackageOrProductFilter: {
-                NDC9: ["00009-5181"]
-            }
-        },
-        dataset_4: {
-            PackageOrProductFilter: {
-                PackageId: ["2061"]
-            }
-        },
-        dataset_5: {
-            PackageOrProductFilter: {
-                PackageId: ["2062"]
-            }
-        },
-        dataset_6: {
-            PackageOrProductFilter: {
-                PackageId: ["2064"]
-            }
-        },
-        dataset_7: {
-            PackageOrProductFilter: {
-                PackageId: ["2070"]
-            }
-        },
-        dataset_8: {
-            PackageOrProductFilter: {
-                NDC10: ["0603-2115-32"]
-            }
-        },
-        dataset_9: {
-            PackageOrProductFilter: {
-                NDC10: ["0603-2116-28"]
-            }
-        },
-        dataset_10: {
-            PackageOrProductFilter: {
-                NDC10: ["0603-2116-32"]
-            }
-        },
-        dataset_11: {
-            PackageOrProductFilter: {
-                NDC10: ["0603-2116-21"]
-            }
-        },
-        dataset_12: {
-            PackageOrProductFilter: {
-                NDC11: ["68094-0193-62"]
-            }
-        },
-        dataset_13: {
-            PackageOrProductFilter: {
-                NDC11: ["52041-0007-26"]
-            }
-        },
-        dataset_14: {
-            PackageOrProductFilter: {
-                NDC11: ["00378-6173-01"]
-            }
-        },
-        dataset_15: {
-            PackageOrProductFilter: {
-                NDC11: ["00378-6174-01"]
-            }
-        },
-        dataset_16: {
-            PackageOrProductFilter: {
-                UPCB: ["96295-11194"]
-            }
-        },
-        dataset_17: {
-            PackageOrProductFilter: {
-                UPCB: ["96295-11195"]
-            }
-        },
-        dataset_18: {
-            PackageOrProductFilter: {
-                UPCB: ["96295-11196"]
-            }
-        },
-        dataset_19: {
-            PackageOrProductFilter: {
-                UPCB: ["96295-11223"]
-            }
-        },
-        dataset_20: {
-            PackageOrProductFilter: {
-                GTIN12: ["310019662039"]
-            }
-        },
-        dataset_21: {
-            PackageOrProductFilter: {
-                GTIN12: ["310019075877"]
-            }
-        },
-        dataset_22: {
-            PackageOrProductFilter: {
-                GTIN12: ["351672520236"]
-            }
-        },
-        dataset_23: {
-            PackageOrProductFilter: {
-                GTIN12: ["351672520434"]
-            }
-        },
-        dataset_24: {
-            PackageOrProductFilter: {
-                GTIN14: ["00300780385664"]
-            }
-        },
-        dataset_25: {
-            PackageOrProductFilter: {
-                GTIN14: ["00300780386661"]
-            }
-        },
-        dataset_26: {
-            PackageOrProductFilter: {
-                GTIN14: ["00351672406219"]
-            }
-        },
-        dataset_27: {
-            PackageOrProductFilter: {
-                GTIN14: ["00351672406318"]
-            }
-        },
-        dataset_28: {
-            PackageOrProductFilter: {
-                ProductId: ["57866"]
-            }
-        },
-        dataset_29: {
-            PackageOrProductFilter: {
-                ProductId: ["17029"]
-            }
-        },
-        dataset_30: {
-            PackageOrProductFilter: {
-                ProductId: ["7284"]
-            }
-        },
-        dataset_31: {
-            PackageOrProductFilter: {
-                ProductId: ["7285"]
-            }
-        },
-        dataset_32: {
-            PackageOrProductFilter: {
-                NHRIC: ["8287-126029"]
-            }
-        },
-        dataset_33: {
-            PackageOrProductFilter: {
-                NHRIC: ["8287-126016"]
-            }
-        },
-        dataset_34: {
-            PackageOrProductFilter: {
-                NHRIC: ["8222-072597"]
-            }
-        },
-        dataset_35: {
-            PackageOrProductFilter: {
-                NHRIC: ["8222-074393"]
-            }
-        },
-        dataset_36: {
-            PackageOrProductFilter: {
-                PIN: ["50580010904"]
-            }
-        },
-        dataset_37: {
-            PackageOrProductFilter: {
-                PIN: ["50580021136"]
-            }
-        },
-        dataset_38: {
-            PackageOrProductFilter: {
-                PIN: ["50580010904"]
-            }
-        },
-        dataset_39: {
-            PackageOrProductFilter: {
-                PIN: ["50580092218"]
-            }
-        },
+        valid_ndc9_00002_7394_dataset_1: { PackageOrProductFilter: { NDC9: ["00002-7394"] }, expectedStatus: 200 },
+        valid_ndc9_00085_0620_dataset_2: { PackageOrProductFilter: { NDC9: ["00085-0620"] }, expectedStatus: 200 },
+        valid_package_id_2064_dataset_3: { PackageOrProductFilter: { PackageId: ["2064"] }, expectedStatus: 200 },
+        valid_package_id_2070_dataset_4: { PackageOrProductFilter: { PackageId: ["2070"] }, expectedStatus: 200 },
+        valid_ndc10_0603_2115_32_dataset_5: { PackageOrProductFilter: { NDC10: ["0603-2115-32"] }, expectedStatus: 200 },
+        valid_ndc10_0603_2116_28_dataset_6: { PackageOrProductFilter: { NDC10: ["0603-2116-28"] }, expectedStatus: 200 },
+        valid_ndc11_00378_6173_01_dataset_7: { PackageOrProductFilter: { NDC11: ["00378-6173-01"] }, expectedStatus: 200 },
+        valid_ndc11_00378_6174_01_dataset_8: { PackageOrProductFilter: { NDC11: ["00378-6174-01"] }, expectedStatus: 200 },
+        valid_upcb_96295_11194_dataset_9: { PackageOrProductFilter: { UPCB: ["96295-11194"] }, expectedStatus: 200 },
+        valid_upcb_96295_11195_dataset_10: { PackageOrProductFilter: { UPCB: ["96295-11195"] }, expectedStatus: 200 },
+        valid_gtin12_310019662039_dataset_11: { PackageOrProductFilter: { GTIN12: ["310019662039"] }, expectedStatus: 200 },
+        valid_gtin12_310019075877_dataset_12: { PackageOrProductFilter: { GTIN12: ["310019075877"] }, expectedStatus: 200 },
+        valid_gtin14_00300780385664_dataset_13: { PackageOrProductFilter: { GTIN14: ["00300780385664"] }, expectedStatus: 200 },
+        valid_gtin14_00300780386661_dataset_14: { PackageOrProductFilter: { GTIN14: ["00300780386661"] }, expectedStatus: 200 },
+        valid_product_id_57866_dataset_15: { PackageOrProductFilter: { ProductId: ["57866"] }, expectedStatus: 200 },
+        valid_product_id_17029_dataset_16: { PackageOrProductFilter: { ProductId: ["17029"] }, expectedStatus: 200 },
+        valid_product_id_7284_dataset_17: { PackageOrProductFilter: { ProductId: ["7284"] }, expectedStatus: 200 },
+        valid_product_id_7285_dataset_18: { PackageOrProductFilter: { ProductId: ["7285"] }, expectedStatus: 200 },
+        valid_nhric_8287_126029_dataset_19: { PackageOrProductFilter: { NHRIC: ["8287-126029"] }, expectedStatus: 200 },
+        valid_nhric_8287_126016_dataset_20: { PackageOrProductFilter: { NHRIC: ["8287-126016"] }, expectedStatus: 200 },
+        valid_pin_50580010904_dataset_21: { PackageOrProductFilter: { PIN: ["50580010904"] }, expectedStatus: 200 },
+        valid_pin_50580092218_dataset_22: { PackageOrProductFilter: { PIN: ["50580092218"] }, expectedStatus: 200 },
+        empty_product_id_dataset_23: { PackageOrProductFilter: { ProductId: [""] }, expectedStatus: 400 },
+        empty_id_type_dataset_24: { PackageOrProductFilter: { "": ["55786"] }, expectedStatus: 400 },
+        numeric_ndc11_id_dataset_25: { PackageOrProductFilter: { NDC11: [1234567890] }, expectedStatus: 400 },
     },
 
     // Reports - ListProductImages Data Objects 
@@ -784,187 +614,108 @@ export default {
                 NDC9: ["00085-0620"]
             },
         },
+
         dataset_3: {
-            PackageOrProductFilter: {
-                NDC9: ["00009-5181"]
-            },
-        },
-        dataset_4: {
-            PackageOrProductFilter: {
-                PackageId: ["2061"]
-            },
-        },
-        dataset_5: {
-            PackageOrProductFilter: {
-                PackageId: ["2062"]
-            },
-        },
-        dataset_6: {
             PackageOrProductFilter: {
                 PackageId: ["2064"]
             },
         },
-        dataset_7: {
+        dataset_4: {
             PackageOrProductFilter: {
                 PackageId: ["2070"]
             },
         },
-        dataset_8: {
+        dataset_5: {
             PackageOrProductFilter: {
                 NDC10: ["0603-2115-32"]
             },
         },
-        dataset_9: {
+        dataset_6: {
             PackageOrProductFilter: {
                 NDC10: ["0603-2116-28"]
             },
         },
-        dataset_10: {
-            PackageOrProductFilter: {
-                NDC10: ["0603-2116-32"]
-            },
-        },
-        dataset_11: {
-            PackageOrProductFilter: {
-                NDC10: ["0603-2116-21"]
-            },
-        },
-        dataset_12: {
-            PackageOrProductFilter: {
-                NDC11: ["68094-0193-62"]
-            },
-        },
-        dataset_13: {
-            PackageOrProductFilter: {
-                NDC11: ["52041-0007-26"]
-            },
-        },
-        dataset_14: {
+
+        dataset_7: {
             PackageOrProductFilter: {
                 NDC11: ["00378-6173-01"]
             },
         },
-        dataset_15: {
+        dataset_8: {
             PackageOrProductFilter: {
                 NDC11: ["00378-6174-01"]
             },
         },
-        dataset_16: {
+        dataset_9: {
             PackageOrProductFilter: {
                 UPCB: ["96295-11194"]
             },
         },
-        dataset_17: {
+        dataset_10: {
             PackageOrProductFilter: {
                 UPCB: ["96295-11195"]
             },
         },
-        dataset_18: {
-            PackageOrProductFilter: {
-                UPCB: ["96295-11196"]
-            },
-        },
-        dataset_19: {
-            PackageOrProductFilter: {
-                UPCB: ["96295-11223"]
-            },
-        },
-        dataset_20: {
+
+        dataset_11: {
             PackageOrProductFilter: {
                 GTIN12: ["310019662039"]
             },
         },
-        dataset_21: {
+        dataset_12: {
             PackageOrProductFilter: {
                 GTIN12: ["310019075877"]
             },
         },
-        dataset_22: {
-            PackageOrProductFilter: {
-                GTIN12: ["351672520236"]
-            },
-        },
-        dataset_23: {
-            PackageOrProductFilter: {
-                GTIN12: ["351672520434"]
-            },
-        },
-        dataset_24: {
+
+        dataset_13: {
             PackageOrProductFilter: {
                 GTIN14: ["00300780385664"]
             },
         },
-        dataset_25: {
+        dataset_14: {
             PackageOrProductFilter: {
                 GTIN14: ["00300780386661"]
             },
         },
-        dataset_26: {
-            PackageOrProductFilter: {
-                GTIN14: ["00351672406219"]
-            },
-        },
-        dataset_27: {
-            PackageOrProductFilter: {
-                GTIN14: ["00351672406318"]
-            },
-        },
-        dataset_28: {
+
+        dataset_15: {
             PackageOrProductFilter: {
                 ProductId: ["57866"]
             },
         },
-        dataset_29: {
+        dataset_16: {
             PackageOrProductFilter: {
                 ProductId: ["17029"]
             },
         },
-        dataset_30: {
+        dataset_17: {
             PackageOrProductFilter: {
                 ProductId: ["7284"]
             },
         },
-        dataset_31: {
+        dataset_18: {
             PackageOrProductFilter: {
                 ProductId: ["7285"]
             },
         },
-        dataset_32: {
+        dataset_19: {
             PackageOrProductFilter: {
                 NHRIC: ["8287-126029"]
             },
         },
-        dataset_33: {
+        dataset_20: {
             PackageOrProductFilter: {
                 NHRIC: ["8287-126016"]
             },
         },
-        dataset_34: {
-            PackageOrProductFilter: {
-                NHRIC: ["8222-072597"]
-            },
-        },
-        dataset_35: {
-            PackageOrProductFilter: {
-                NHRIC: ["8222-074393"]
-            },
-        },
-        dataset_36: {
+
+        dataset_21: {
             PackageOrProductFilter: {
                 PIN: ["50580010904"]
             },
         },
-        dataset_37: {
-            PackageOrProductFilter: {
-                PIN: ["50580021136"]
-            },
-        },
-        dataset_38: {
-            PackageOrProductFilter: {
-                PIN: ["50580010904"]
-            },
-        },
-        dataset_39: {
+        dataset_22: {
             PackageOrProductFilter: {
                 PIN: ["50580092218"]
             },
@@ -1532,148 +1283,70 @@ ListDrugInteractionReferences_dataObjects: {
 
 // Reports - ListFederal  Data Objects 
 ListFederal_dataObjects: {
-
-    dataset_1: {
-        PackageOrProductFilter: {
-            ProductId: ["108"]
-        },
-        MaxResults: "100"
+    valid_product_id_46624_dataset_1: {
+        PackageOrProductFilter: { IdType: "ProductId", Id: "46624" },
+        expectedStatus: 200
     },
-
-    dataset_2: {
-        PackageOrProductFilter: {
-            ProductId: ["131"]
-        },
-        MaxResults: "100"
+    valid_product_id_108_dataset_2: {
+        MaxResults: "100",
+        PackageOrProductFilter: { IdType: "ProductId", Id: "108" },
+        expectedStatus: 200
     },
-
-    dataset_3: {
-        PackageOrProductFilter: {
-            PackageId: ["151"]
-        },
-        MaxResults: "50"
+    valid_package_id_69735_dataset_3: {
+        MaxResults: "20",
+        PackageOrProductFilter: { IdType: "PackageId", Id: "69735" },
+        expectedStatus: 200
     },
-
-    dataset_4: {
-        PackageOrProductFilter: {
-            PackageId: ["173"]
-        },
-        MaxResults: "25"
+    valid_zero_max_results_dataset_4: {
+        MaxResults: "0",
+        PackageOrProductFilter: { IdType: "PackageId", Id: "151" },
+        expectedStatus: 200
     },
-
-    dataset_5: {
-        PackageOrProductFilter: {
-            NDC9: ["11523-7157"]
-        },
-        MaxResults: "20"
+    valid_ndc9_filter_dataset_5: {
+        PackageOrProductFilter: { IdType: "NDC9", Id: "49884-0483" },
+        expectedStatus: 200
     },
-
-    dataset_6: {
-        PackageOrProductFilter: {
-            NDC9: ["55953-0020"]
-        },
-        MaxResults: "30"
+    valid_upcb_filter_dataset_6: {
+        PackageOrProductFilter: { IdType: "UPCB", Id: "96295010217" },
+        expectedStatus: 200
     },
-
-    dataset_7: {
-        PackageOrProductFilter: {
-            UPCB: ["61059-29735"]
-        },
-        MaxResults: "20"
+    valid_nhric_filter_dataset_7: {
+        PackageOrProductFilter: { IdType: "NHRIC", Id: "8290322065" },
+        expectedStatus: 200
     },
-
-    dataset_8: {
-        PackageOrProductFilter: {
-            UPCB: ["96295-12007"]
-        },
-        MaxResults: "40"
+    valid_pin_filter_dataset_8: {
+        PackageOrProductFilter: { IdType: "PIN", Id: "50580089507" },
+        expectedStatus: 200
     },
-
-    dataset_9: {
-        PackageOrProductFilter: {
-            NHRIC: ["8373-982600"]
-        },
-        MaxResults: "50"
+    valid_ndc10_filter_dataset_9: {
+        PackageOrProductFilter: { IdType: "NDC10", Id: "5374613201" },
+        expectedStatus: 200
     },
-
-    dataset_10: {
-        PackageOrProductFilter: {
-            NHRIC: ["8595-070050"]
-        },
-        MaxResults: "10"
+    valid_ndc11_filter_dataset_10: {
+        PackageOrProductFilter: { IdType: "NDC11", Id: "53746013201" },
+        expectedStatus: 200
     },
-
-    dataset_11: {
-        PackageOrProductFilter: {
-            PIN: ["0809080000555"]
-        },
-        MaxResults: "12"
+    valid_gtin12_filter_dataset_11: {
+        PackageOrProductFilter: { IdType: "GTIN12", Id: "300937436010" },
+        expectedStatus: 200
     },
-
-    dataset_12: {
-        PackageOrProductFilter: {
-            PIN: ["0809080000548"]
-        },
-        MaxResults: "16"
+    valid_gtin14_filter_dataset_12: {
+        PackageOrProductFilter: { IdType: "GTIN14", Id: "00365162313147" },
+        expectedStatus: 200
     },
-
-    dataset_13: {
-        PackageOrProductFilter: {
-            NDC10: ["0093-6108-12"]
-        },
-        MaxResults: "35"
+    missing_package_or_product_filter_dataset_13: {
+        MaxResults: "10",
+        expectedStatus: 400
     },
-
-    dataset_14: {
-        PackageOrProductFilter: {
-            NDC10: ["74300-08151"]
-        },
-        MaxResults: "45"
+    missing_id_dataset_14: {
+        PackageOrProductFilter: { IdType: "ProductId" },
+        expectedStatus: 400
     },
-
-    dataset_15: {
-        PackageOrProductFilter: {
-            NDC11: ["00574-0850-05"]
-        },
-        MaxResults: "25"
-    },
-
-    dataset_16: {
-        PackageOrProductFilter: {
-            NDC11: ["00574-0850-10"]
-        },
-        MaxResults: "15"
-    },
-
-    dataset_17: {
-        PackageOrProductFilter: {
-            GTIN12: ["361703325181"]
-        },
-        MaxResults: "54"
-    },
-
-    dataset_18: {
-        PackageOrProductFilter: {
-            GTIN12: ["355513028011"]
-        },
-        MaxResults: "52"
-    },
-
-    dataset_19: {
-        PackageOrProductFilter: {
-            GTIN14: ["00307033019123"]
-        },
-        MaxResults: "14"
-    },
-
-    dataset_20: {
-        PackageOrProductFilter: {
-            GTIN14: ["00307034636015"]
-        },
-        MaxResults: "48"
+    missing_id_type_dataset_15: {
+        MaxResults: "5",
+        PackageOrProductFilter: { Id: "108" },
+        expectedStatus: 400
     }
-
-
 },
 
 
@@ -3656,52 +3329,64 @@ ListRoutesOfAdministration_dataObjects: {
 // Reports - ListRxNormByProduct  Data Objects 
 ListRxNormByProduct_dataObjects: {
 
-    dataset_1: {
-        ProductId: {
-            NDC9: ["66591-0335"]
-        },
-        ReturnRxNormSynonyms: true,
-            MaxResults: "100"
-    },
-
-    dataset_2: {
-        ProductId: {
-            NDC9: ["00002-4462"]
-        },
-        ReturnRxNormSynonyms: true,
-            MaxResults: "100"
-    },
-
-    dataset_3: {
-        ProductId: {
-            NDC9: ["00002-5121"]
-        },
-        ReturnRxNormSynonyms: true,
-            MaxResults: "100"
-    },
-
-    dataset_4: {
+    valid_product_synonyms_dataset_1: {
         ProductId: {
             ProductId: ["38273"]
         },
         ReturnRxNormSynonyms: true,
-            MaxResults: "100"
+        expectedStatus: 200
     },
 
-    dataset_5: {
+    valid_product_no_synonyms_dataset_2: {
         ProductId: {
             ProductId: ["12379"]
         },
-        ReturnRxNormSynonyms: true,
-            MaxResults: "100"
+        ReturnRxNormSynonyms: false,
+        expectedStatus: 200
     },
 
-    dataset_6: {
+    zero_max_results_dataset_3: {
         ProductId: {
             ProductId: ["12399"]
         },
-        ReturnRxNormSynonyms: true,
-            MaxResults: "100"
+        MaxResults: 0,
+        expectedStatus: 200
+    },
+
+    valid_ndc9_dataset_4: {
+        ProductId: {
+            NDC9: ["66591-0335"]
+        },
+        expectedStatus: 200
+    },
+
+    valid_alternate_ndc9_dataset_5: {
+        ProductId: {
+            NDC9: ["00002-4462"]
+        },
+        expectedStatus: 200
+    },
+
+    ndc9_limit_40_dataset_6: {
+        ProductId: {
+            NDC9: ["00002-5121"]
+        },
+        MaxResults: 40,
+        expectedStatus: 200
+    },
+
+    missing_product_id_dataset_7: {
+        ProductId: {
+            ProductId: []
+        },
+        expectedStatus: 400
+    },
+
+    missing_product_id_type_dataset_8: {
+        ProductId: {
+            '': ["784"]
+        },
+        expectedStatus: 400
     },
 
 },
@@ -4332,56 +4017,61 @@ ListSpecificProducts_dataObjects: {
 // Reports - ListStateDEAClassification  Data Objects 
 ListStateDEAClassification_dataObjects: {
 
-    dataset_1: {
-        ProductId: {
-            NDC9: ["58177-0426"]
-        },
+    valid_ndc9_wi_dataset_1: {
+        ProductId: { NDC9: ["58177-0426"] },
         StateId: "WI",
-        },
-    dataset_2: {
-        ProductId: {
-            NDC9: ["00573-0189"]
-        },
+        expectedStatus: 200
+    },
+    valid_ndc9_la_dataset_2: {
+        ProductId: { NDC9: ["00573-0189"] },
         StateId: "LA",
-        },
-    dataset_3: {
-        ProductId: {
-            NDC9: ["00591-0396"]
-        },
+        expectedStatus: 200
+    },
+    valid_ndc9_ms_dataset_3: {
+        ProductId: { NDC9: ["00591-0396"] },
         StateId: "MS",
-        },
-    dataset_4: {
-        ProductId: {
-            NDC9: ["00591-0395"]
-        },
+        expectedStatus: 200
+    },
+    valid_ndc9_mi_dataset_4: {
+        ProductId: { NDC9: ["00591-0395"] },
         StateId: "MI",
-        },
-    dataset_5: {
-        ProductId: {
-            ProductId: ["343"]
-        },
+        expectedStatus: 200
+    },
+    valid_product_id_ks_dataset_5: {
+        ProductId: { ProductId: ["343"] },
         StateId: "KS",
-        },
-    dataset_6: {
-        ProductId: {
-            ProductId: ["353"]
-        },
+        expectedStatus: 200
+    },
+    valid_product_id_ga_dataset_6: {
+        ProductId: { ProductId: ["353"] },
         StateId: "GA",
-        },
-    dataset_7: {
-        ProductId: {
-            ProductId: ["373"]
-        },
+        expectedStatus: 200
+    },
+    valid_product_id_il_dataset_7: {
+        ProductId: { ProductId: ["373"] },
         StateId: "IL",
-        },
-    dataset_8: {
-        ProductId: {
-            ProductId: ["374"]
-        },
+        expectedStatus: 200
+    },
+    valid_product_id_la_dataset_8: {
+        ProductId: { ProductId: ["374"] },
         StateId: "LA",
-        },
+        expectedStatus: 200
+    },
+    missing_state_id_dataset_9: {
+        ProductId: { IdType: "ProductId", Id: "7284" },
+        expectedStatus: 400
+    },
+    missing_product_id_type_dataset_10: {
+        ProductId: { Id: "374" },
+        StateId: "LA",
+        expectedStatus: 400
+    },
+    missing_product_id_dataset_11: {
+        ProductId: { IdType: "ProductId" },
+        StateId: "GA",
+        expectedStatus: 400
+    },
 },
-
 
 // Reports - ListStateLegendStatus  Data Objects 
 ListStateLegendStatus_dataObjects: {
